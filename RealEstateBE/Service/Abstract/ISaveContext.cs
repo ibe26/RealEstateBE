@@ -2,6 +2,6 @@
 {
     public interface ISaveContext
     {
-        public bool SaveChanges();
+        bool SaveChanges();
     }
 }

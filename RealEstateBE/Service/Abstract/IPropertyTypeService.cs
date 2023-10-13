@@ -8,9 +8,9 @@ namespace RealEstateBE.Service.Abstract
     {
 
         public Task<IEnumerable<PropertyType>> GetPropertyTypes();
-        public Task<PropertyType> GetPropertyById(int id);
-        public Task InsertPropertyType(PropertyType propertyType);
-        public Task DeletePropertyType(int id);
+        public Task<PropertyType?> GetPropertyTypeById(int id);
+        public Task<bool> InsertPropertyType(PropertyType propertyType);
+        public Task<bool> DeletePropertyType(int id);
 
     }
 }

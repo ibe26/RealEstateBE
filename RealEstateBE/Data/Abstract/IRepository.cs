@@ -9,8 +9,8 @@ namespace RealEstateBE.Data.Abstract
         Task<TEntity?> GetByIdAsync(int id);
         Task AddAsync(TEntity entity);
         //Task<TEntity> Update(TEntity entity);
-        Task DeleteByIdAsync(int id);
-        Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<bool> DeleteByIdAsync(int id);
+        Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
         Task<IEnumerable<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> predicate);
         bool SaveChanges();
 

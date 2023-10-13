@@ -9,11 +9,6 @@ namespace RealEstateBE.Data.Concrete
         private static readonly DataContext _context =new ();
         private readonly DbSet<TEntity> _entities=_context.Set<TEntity>();
 
-        //public Repository(DataContext context)
-        //{
-        //    _context = context;
-        //    _entities = _context.Set<TEntity>();
-        //}
         public async virtual Task AddAsync(TEntity entity)
         {
             if (entity is not null)
@@ -22,16 +17,14 @@ namespace RealEstateBE.Data.Concrete
             }
         }
 
-        public async Task DeleteByIdAsync(int id)
+        public async Task<bool> DeleteByIdAsync(int id)
         {
-            if (id > 0)
-            {
                 TEntity? t = await _entities.FindAsync(id);
                 if (t != null)
                 {
                    _context.Remove(t);
                 }
-            }
+                return SaveChanges();
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()

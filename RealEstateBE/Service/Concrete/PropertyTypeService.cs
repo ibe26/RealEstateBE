@@ -16,20 +16,24 @@ namespace RealEstateBE.Service.Concrete
             _dbContext = dbContext;
             _propertyType = dbContext.PropertyTypes;
         }
-        public async Task DeletePropertyType(int id)
+        public async Task<bool> DeletePropertyType(int id)
         {
             var entity =await _propertyType.SingleOrDefaultAsync(p => p.PropertyTypeID == id);
             if (entity != null)
             {
                _propertyType.Remove(entity);
             }
+            return SaveChanges();
 
         }
 
-        public async Task<PropertyType> GetPropertyById(int id)
+        public async Task<PropertyType?> GetPropertyTypeById(int id)
         {
-
-            return await _propertyType.FindAsync(id);
+            if(id>0)
+            {
+                return await _propertyType.FindAsync(id);
+            }
+            return null;
         }
 
         public async Task<IEnumerable<PropertyType>> GetPropertyTypes()
@@ -37,9 +41,10 @@ namespace RealEstateBE.Service.Concrete
             return await _propertyType.ToListAsync();
         }
 
-        public async Task InsertPropertyType(PropertyType propertyType)
+        public async Task<bool> InsertPropertyType(PropertyType propertyType)
         {
              await _propertyType.AddAsync(propertyType);
+            return SaveChanges();
         }
 
         public bool SaveChanges()
