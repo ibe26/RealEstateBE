@@ -6,15 +6,16 @@ namespace RealEstateBE.Data.Concrete
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        private static readonly DataContext _context =new ();
+        private static readonly DataContext _context=new();
         private readonly DbSet<TEntity> _entities=_context.Set<TEntity>();
 
-        public async virtual Task AddAsync(TEntity entity)
+        public async virtual Task<bool> AddAsync(TEntity entity)
         {
             if (entity is not null)
             {
                await _entities.AddAsync(entity);
             }
+           return SaveChanges();
         }
 
         public async Task<bool> DeleteByIdAsync(int id)

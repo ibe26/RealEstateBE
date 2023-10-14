@@ -7,7 +7,7 @@ namespace RealEstateBE.Data.Abstract
 
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity?> GetByIdAsync(int id);
-        Task AddAsync(TEntity entity);
+        Task<bool> AddAsync(TEntity entity);
         //Task<TEntity> Update(TEntity entity);
         Task<bool> DeleteByIdAsync(int id);
         Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);

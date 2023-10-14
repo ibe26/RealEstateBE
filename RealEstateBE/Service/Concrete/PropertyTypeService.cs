@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RealEstateBE.Dal.Abstract;
 using RealEstateBE.Data;
+using RealEstateBE.Entities.DTOs;
 using RealEstateBE.Model;
 using RealEstateBE.Service.Abstract;
 
@@ -8,48 +10,46 @@ namespace RealEstateBE.Service.Concrete
 {
     public class PropertyTypeService : IPropertyTypeService
     {
-        private readonly DataContext _dbContext;
-        private DbSet<PropertyType> _propertyType;
+        private readonly IPropertyTypeDal _propertyTypeDal;
 
-        public PropertyTypeService(DataContext dbContext)
+        public PropertyTypeService(IPropertyTypeDal propertyTypeDal)
         {
-            _dbContext = dbContext;
-            _propertyType = dbContext.PropertyTypes;
+            _propertyTypeDal = propertyTypeDal;
         }
+
+
         public async Task<bool> DeletePropertyType(int id)
         {
-            var entity =await _propertyType.SingleOrDefaultAsync(p => p.PropertyTypeID == id);
-            if (entity != null)
+            var entity =await _propertyTypeDal.SingleOrDefaultAsync(p => p.PropertyTypeID == id);
+            if (entity == null)
             {
-               _propertyType.Remove(entity);
+                return false;
             }
-            return SaveChanges();
-
+            return await _propertyTypeDal.DeleteByIdAsync(entity.PropertyTypeID);
         }
 
         public async Task<PropertyType?> GetPropertyTypeById(int id)
         {
             if(id>0)
             {
-                return await _propertyType.FindAsync(id);
+                return await _propertyTypeDal.GetByIdAsync(id);
             }
             return null;
         }
 
         public async Task<IEnumerable<PropertyType>> GetPropertyTypes()
         {
-            return await _propertyType.ToListAsync();
+            return await _propertyTypeDal.GetAllAsync();
         }
 
-        public async Task<bool> InsertPropertyType(PropertyType propertyType)
+        public async Task<bool> InsertPropertyType(PropertyTypeDTO propertyTypeDTO)
         {
-             await _propertyType.AddAsync(propertyType);
-            return SaveChanges();
+            PropertyType propertyType=new PropertyType()
+            { 
+                PropertyTypeName=propertyTypeDTO.PropertyTypeName,
+            };
+            return await _propertyTypeDal.AddAsync(propertyType);
         }
 
-        public bool SaveChanges()
-        {
-            return _dbContext.SaveChanges()>0;
-        }
     }
 }
