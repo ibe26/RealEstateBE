@@ -17,29 +17,18 @@ namespace RealEstateBE.Service.Concrete
             _propertyTypeDal = propertyTypeDal;
         }
 
-
-        public async Task<bool> DeletePropertyType(int id)
-        {
-            var entity =await _propertyTypeDal.SingleOrDefaultAsync(p => p.PropertyTypeID == id);
-            if (entity == null)
-            {
-                return false;
-            }
-            return await _propertyTypeDal.DeleteByIdAsync(entity.PropertyTypeID);
-        }
-
-        public async Task<PropertyType?> GetPropertyTypeById(int id)
-        {
-            if(id>0)
-            {
-                return await _propertyTypeDal.GetByIdAsync(id);
-            }
-            return null;
-        }
-
         public async Task<IEnumerable<PropertyType>> GetPropertyTypes()
         {
-            return await _propertyTypeDal.GetAllAsync();
+            //Making such operations to make 'Other' option always to be on the bottom, to ease frontend.
+            List<PropertyType> list= (await _propertyTypeDal.GetAllAsync()).ToList();
+            PropertyType? entity = list.SingleOrDefault(p => p.PropertyTypeName.ToLower() == "other");
+            if (entity!=null)
+            {
+                list.Remove(entity);
+                list.Add(entity);
+            }
+            return list;
+
         }
 
         public async Task<bool> InsertPropertyType(PropertyTypeDTO propertyTypeDTO)

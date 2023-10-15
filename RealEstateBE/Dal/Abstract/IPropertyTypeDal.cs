@@ -3,7 +3,7 @@ using RealEstateBE.Model;
 
 namespace RealEstateBE.Dal.Abstract
 {
-    public interface IPropertyTypeDal:IRepository<PropertyType>
+    public interface IPropertyTypeDal:IRepositoryReadWrite<PropertyType>
     {
     }
 }

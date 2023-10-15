@@ -5,7 +5,7 @@ using RealEstateBE.Model;
 
 namespace RealEstateBE.Dal.Concrete
 {
-    public class PropertyTypeDal : Repository<PropertyType>, IPropertyTypeDal
+    public class PropertyTypeDal : RepositoryReadWrite<PropertyType>, IPropertyTypeDal
     {
         
     }
