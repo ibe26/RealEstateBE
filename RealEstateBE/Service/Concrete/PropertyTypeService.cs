@@ -21,12 +21,7 @@ namespace RealEstateBE.Service.Concrete
         {
             //Making such operations to make 'Other' option always to be on the bottom, to ease frontend.
             List<PropertyType> list= (await _propertyTypeDal.GetAllAsync()).ToList();
-            PropertyType? entity = list.SingleOrDefault(p => p.PropertyTypeName.ToLower() == "other");
-            if (entity!=null)
-            {
-                list.Remove(entity);
-                list.Add(entity);
-            }
+            ServiceHelper.MoveToBottom(list, p => p.PropertyTypeName.ToLower() == "other");
             return list;
 
         }

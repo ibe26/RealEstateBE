@@ -3,7 +3,7 @@ using RealEstateBE.Model;
 
 namespace RealEstateBE.Dal.Abstract
 {
-    public interface IPropertyListingTypeDal:IRepository<PropertyListingType>
+    public interface IPropertyListingTypeDal:IRepositoryReadWrite<PropertyListingType>
     {
     }
 }

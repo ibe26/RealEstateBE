@@ -16,8 +16,12 @@ builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IPropertyTypeDal, PropertyTypeDal>();
+builder.Services.AddScoped<IPropertyListingTypeDal, PropertyListingTypeDal>();
+builder.Services.AddScoped<IPropertyDal, PropertyDal>();
+
 builder.Services.AddScoped<IPropertyTypeService,PropertyTypeService>();
-//builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(("Default")));
+builder.Services.AddScoped<IPropertyListingTypeService,PropertyListingTypeService>();
+//builder.Services.AddScoped<IPropertyService,PropertyService>();
 
 var app = builder.Build();
 
@@ -32,7 +36,7 @@ app.UseHttpsRedirection();
 
 app.UseCors(m => m.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-app.UseAuthentication(); //first line should be
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

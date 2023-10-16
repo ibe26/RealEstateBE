@@ -4,7 +4,7 @@ using RealEstateBE.Model;
 
 namespace RealEstateBE.Dal.Concrete
 {
-    public class PropertyListingTypeDal:Repository<PropertyListingType>,IPropertyListingTypeDal
+    public class PropertyListingTypeDal:RepositoryReadWrite<PropertyListingType>,IPropertyListingTypeDal
     {
     }
 }

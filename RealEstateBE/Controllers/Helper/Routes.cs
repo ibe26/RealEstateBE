@@ -1,4 +1,4 @@
-﻿namespace RealEstateBE
+﻿namespace RealEstateBE.Controllers.Helper
 {
     public static class Routes
     {
