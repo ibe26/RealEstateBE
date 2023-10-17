@@ -25,17 +25,17 @@ namespace RealEstateBE.Data.Concrete
             return null;
         }
 
-        //public TEntity Update(TEntity entity)
-        //{
-        //    _entities.Update(entity);
-        //    _context.SaveChanges();
-        //    return entity;
-        //}
+        public bool Update(TEntity entity)
+        {
+            _entities.Update(entity);
+            return SaveChanges();
+        }
 
-        //public async Task<IEnumerable<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> predicate)
-        //{
-        //    return await _entities.Where(predicate).ToListAsync();
-        //}
+        public async Task<IEnumerable<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await _entities.Where(predicate).ToListAsync();
+        }
+
         
     }
 }

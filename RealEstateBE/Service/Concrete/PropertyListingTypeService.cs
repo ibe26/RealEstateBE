@@ -1,4 +1,6 @@
-﻿using RealEstateBE.Dal.Abstract;
+﻿using Microsoft.AspNetCore.Mvc;
+using RealEstateBE.Controllers.Helper;
+using RealEstateBE.Dal.Abstract;
 using RealEstateBE.Entities.DTOs;
 using RealEstateBE.Model;
 using RealEstateBE.Service.Abstract;
@@ -19,7 +21,6 @@ namespace RealEstateBE.Service.Concrete
             ServiceHelper.MoveToBottom(list,p=>p.PropertyListingTypeName.ToLower()=="other");
             return list;
         }
-
         public async Task<bool> InsertPropertyListingType(PropertyListingTypeDTO propertyListingTypeDTO)
         {
             PropertyListingType propertyListingType= new() { PropertyListingTypeName=propertyListingTypeDTO.PropertyListingTypeName};
