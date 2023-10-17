@@ -7,6 +7,6 @@
         public const string insert = "insert";
         public const string deleteById = "delete/{id}";
         public const string update = "update/{id}";
-
+        public const string filterList = "filterList";
     }
 }

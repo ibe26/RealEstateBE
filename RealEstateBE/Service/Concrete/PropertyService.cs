@@ -22,12 +22,13 @@ namespace RealEstateBE.Service.Concrete
 
         public async Task<IEnumerable<Property>> FilterPropertiesAsync(PropertyFilterDTO propertyFilterDTO)
         {
+            if(propertyFilterDTO.MaxPrice==0) propertyFilterDTO.MaxPrice = int.MaxValue;
             IEnumerable<Property> filteredProperties = await _propertyDal.WhereAsync(p =>
-            propertyFilterDTO.PropertyName.IsNullOrEmpty() ? true : p.PropertyName.ToLower().Contains(p.PropertyName.ToLower()) &&
-            p.PropertyPrice >= propertyFilterDTO.MinPrice &&
-            p.PropertyPrice <= propertyFilterDTO.MaxPrice &&
-            propertyFilterDTO.PropertyType == null ? true : p.PropertyType == propertyFilterDTO.PropertyType &&
-            propertyFilterDTO.PropertyListingType == null ? true : p.PropertyListingType == propertyFilterDTO.PropertyListingType
+            (propertyFilterDTO.PropertyName.IsNullOrEmpty() ? false : p.PropertyName.ToLower().Contains(propertyFilterDTO.PropertyName.ToLower())) &&
+            (p.PropertyPrice >= propertyFilterDTO.MinPrice) &&
+            (p.PropertyPrice <= propertyFilterDTO.MaxPrice) &&
+            (propertyFilterDTO.PropertyType == 0 ? true : p.PropertyType == propertyFilterDTO.PropertyType) &&
+            (propertyFilterDTO.PropertyListingType == 0 ? true : p.PropertyListingType == propertyFilterDTO.PropertyListingType)
             );
             return filteredProperties;
         }

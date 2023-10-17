@@ -21,7 +21,7 @@ builder.Services.AddScoped<IPropertyDal, PropertyDal>();
 
 builder.Services.AddScoped<IPropertyTypeService,PropertyTypeService>();
 builder.Services.AddScoped<IPropertyListingTypeService,PropertyListingTypeService>();
-//builder.Services.AddScoped<IPropertyService,PropertyService>();
+builder.Services.AddScoped<IPropertyService,PropertyService>();
 
 var app = builder.Build();
 
