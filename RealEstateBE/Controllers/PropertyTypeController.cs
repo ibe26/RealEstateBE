@@ -18,9 +18,9 @@ namespace RealEstateBE.Controllers
 
         //GET /api/PropertyType/getList
         [HttpGet(Routes.getList)]
-        public Task<IEnumerable<PropertyType>> PropertyTypeList()
+        public async Task<IActionResult> PropertyTypeList()
         {
-            return _propertyTypeService.GetPropertyTypes();
+            return Ok( await _propertyTypeService.GetPropertyTypes());
         }
 
         //POST /api/PropertyType/insert

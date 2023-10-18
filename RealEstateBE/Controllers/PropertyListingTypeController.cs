@@ -20,15 +20,19 @@ namespace RealEstateBE.Controllers
         }
 
         [HttpGet(Routes.getList)]
-        public async Task<IEnumerable<PropertyListingType>> propertyListingTypes()
+        public async Task<IActionResult> propertyListingTypes()
         {
-            return await _propertyListingTypeService.GetPropertyListingTypes();
+            return Ok(await _propertyListingTypeService.GetPropertyListingTypes());
         }
 
         [HttpPost(Routes.insert)]
-        public async Task<bool> Insert(PropertyListingTypeDTO propertyListingTypeDTO)
+        public async Task<IActionResult> Insert(PropertyListingTypeDTO propertyListingTypeDTO)
         {
-            return await _propertyListingTypeService.InsertPropertyListingType(propertyListingTypeDTO);
+            if(propertyListingTypeDTO != null)
+            {
+                return Ok(await _propertyListingTypeService.InsertPropertyListingType(propertyListingTypeDTO));
+            }
+            return BadRequest();
         }
     }
 }
