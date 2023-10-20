@@ -30,7 +30,10 @@ namespace RealEstateBE.Controllers
         {
             if(propertyListingTypeDTO != null)
             {
-                return Ok(await _propertyListingTypeService.InsertPropertyListingType(propertyListingTypeDTO));
+                if(await _propertyListingTypeService.InsertPropertyListingType(propertyListingTypeDTO))
+                {
+                    return Ok();
+                }
             }
             return BadRequest();
         }

@@ -10,7 +10,7 @@ namespace RealEstateBE.Data.Concrete
         private static readonly DataContext _context = new();
         protected readonly DbSet<TEntity> _entities = _context.Set<TEntity>();
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _entities.ToListAsync();
         }

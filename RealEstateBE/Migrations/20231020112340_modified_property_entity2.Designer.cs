@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstateBE.Data;
 
@@ -10,9 +11,11 @@ using RealEstateBE.Data;
 namespace RealEstateBE.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231020112340_modified_property_entity2")]
+    partial class modified_property_entity2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,6 +68,10 @@ namespace RealEstateBE.Migrations
 
                     b.HasKey("PropertyID");
 
+                    b.HasIndex("PropertyListingTypeID");
+
+                    b.HasIndex("PropertyTypeID");
+
                     b.ToTable("Properties");
                 });
 
@@ -100,6 +107,25 @@ namespace RealEstateBE.Migrations
                     b.HasKey("PropertyTypeID");
 
                     b.ToTable("PropertyTypes");
+                });
+
+            modelBuilder.Entity("RealEstateBE.Model.Property", b =>
+                {
+                    b.HasOne("RealEstateBE.Model.PropertyListingType", "PropertyListingType")
+                        .WithMany()
+                        .HasForeignKey("PropertyListingTypeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RealEstateBE.Model.PropertyType", "PropertyType")
+                        .WithMany()
+                        .HasForeignKey("PropertyTypeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PropertyListingType");
+
+                    b.Navigation("PropertyType");
                 });
 #pragma warning restore 612, 618
         }

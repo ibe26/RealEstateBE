@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using RealEstateBE.Dal.Abstract;
 using RealEstateBE.Dal.Concrete;
 using RealEstateBE.Data;
@@ -22,6 +23,8 @@ builder.Services.AddScoped<IPropertyDal, PropertyDal>();
 builder.Services.AddScoped<IPropertyTypeService,PropertyTypeService>();
 builder.Services.AddScoped<IPropertyListingTypeService,PropertyListingTypeService>();
 builder.Services.AddScoped<IPropertyService,PropertyService>();
+
+builder.Services.AddScoped<IMemoryCache, MemoryCache>();
 
 var app = builder.Build();
 

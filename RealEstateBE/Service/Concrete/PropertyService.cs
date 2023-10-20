@@ -9,6 +9,7 @@ namespace RealEstateBE.Service.Concrete
     public class PropertyService : IPropertyService
     {
         private readonly IPropertyDal _propertyDal;
+        
 
         public PropertyService(IPropertyDal propertyDal)
         {
@@ -26,8 +27,8 @@ namespace RealEstateBE.Service.Concrete
 
             IEnumerable<Property> filteredProperties = await _propertyDal.WhereAsync(p =>
             (propertyFilterDTO.PropertyName.IsNullOrEmpty() || p.PropertyName.ToLower().Contains(propertyFilterDTO.PropertyName!.ToLower())) &&
-            (propertyFilterDTO.PropertyType == 0 || p.PropertyType == propertyFilterDTO.PropertyType) &&
-            (propertyFilterDTO.PropertyListingType == 0 || p.PropertyListingType == propertyFilterDTO.PropertyListingType) &&
+            (propertyFilterDTO.PropertyTypeID == 0 || p.PropertyTypeID == propertyFilterDTO.PropertyTypeID) &&
+            (propertyFilterDTO.PropertyListingTypeID == 0 || p.PropertyListingTypeID == propertyFilterDTO.PropertyListingTypeID) &&
             (propertyFilterDTO.City.IsNullOrEmpty() || p.City.ToLower().Equals(propertyFilterDTO.City!.ToLower())) &&
             (propertyFilterDTO.District.IsNullOrEmpty() || p.District.ToLower().Equals(propertyFilterDTO.District!.ToLower())) &&
             (propertyFilterDTO.Quarter.IsNullOrEmpty() || p.Quarter.ToLower().Equals(propertyFilterDTO.Quarter!.ToLower())) &&
@@ -51,9 +52,9 @@ namespace RealEstateBE.Service.Concrete
             Property property = new()
             {
                 PropertyName = propertyDTO.PropertyName,
-                PropertyType = propertyDTO.PropertyType,
+                PropertyTypeID = propertyDTO.PropertyTypeID,
+                PropertyListingTypeID = propertyDTO.PropertyTypeID,
                 PropertyPrice = propertyDTO.PropertyPrice,
-                PropertyListingType = propertyDTO.PropertyListingType,
                 City = propertyDTO.City,
                 District = propertyDTO.District,
                 Quarter = propertyDTO.Quarter,
@@ -70,9 +71,9 @@ namespace RealEstateBE.Service.Concrete
             if (property != null)
             {
                 property.PropertyName = propertyDTO.PropertyName;
-                property.PropertyType = propertyDTO.PropertyType;
+                property.PropertyTypeID = propertyDTO.PropertyTypeID;
+                property.PropertyListingTypeID = propertyDTO.PropertyTypeID;
                 property.PropertyPrice = propertyDTO.PropertyPrice;
-                property.PropertyListingType = propertyDTO.PropertyListingType;
                 property.City = propertyDTO.City;
                 propertyDTO.District = propertyDTO.District;
                 propertyDTO.Quarter = propertyDTO.Quarter;

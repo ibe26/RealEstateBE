@@ -10,9 +10,9 @@ namespace RealEstateBE.Model
         [Required]
         public string PropertyName { get; set; } = String.Empty;
         [Required]
-        public int PropertyType { get; set; }
+        public int PropertyTypeID { get; set; }
         [Required]
-        public int PropertyListingType { get; set; }
+        public int PropertyListingTypeID { get; set; }
         [Required]
         public int PropertyPrice { get; set; }
         [Required]
