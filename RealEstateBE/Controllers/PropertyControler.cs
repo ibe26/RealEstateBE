@@ -47,12 +47,14 @@ namespace RealEstateBE.Controllers
         {
             if (id > 0)
             {
-                if ((await _propertyService.GetProperty(id)) != null)
+                Property? property= await _propertyService.GetProperty(id);
+                if (property!= null)
                 {
-                    return Ok();
+                    return Ok(property);
                 }
+                return BadRequest("Property could not be found according the parameters.");
             }
-            return BadRequest();
+            return BadRequest("Parameter is invalid.");
         }
 
         [HttpPost(Helper.Routes.filterList)]
@@ -79,25 +81,27 @@ namespace RealEstateBE.Controllers
                     if (await _propertyService.InsertProperty(propertyDTO))
                     {
                         _memoryCache.Remove(ProductCacheKey);
-                        return Ok();
+                        return Ok(propertyDTO);
                     }
+                    return BadRequest("Couldn't insert given property.");
                 }
+                return BadRequest("Given PropertyListingType or PropertyType are invalid.");
             }
-            return BadRequest();
+            return BadRequest("Please provide a valid body.");
         }
 
         [HttpPost(Helper.Routes.update)]
         public async Task<IActionResult> UpdateProperty([FromBody] PropertyDTO propertyDTO, int id)
         {
-            if (propertyDTO != null || id > 0)
+            if (propertyDTO != null && id > 0)
             {
                 if (await _propertyService.UpdateProperty(propertyDTO!, id))
                 {
                     _memoryCache.Remove(ProductCacheKey);
-                    return Ok();
+                    return Ok(propertyDTO);
                 }
             }
-            return BadRequest();
+            return BadRequest("Parameter is invalid.");
         }
         [HttpDelete(Helper.Routes.deleteById)]
         public async Task<IActionResult> DeleteProperty(int id)
@@ -109,10 +113,10 @@ namespace RealEstateBE.Controllers
                 if(await _propertyService.DeleteProperty(id))
                 {
                     _memoryCache.Remove(ProductCacheKey);
-                    return Ok();
+                    return Ok(id);
                 }
             }
-            return BadRequest();
+            return BadRequest("Parameter is invalid.");
         }
     }
 }
