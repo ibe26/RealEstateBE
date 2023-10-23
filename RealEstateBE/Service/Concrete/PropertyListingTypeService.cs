@@ -15,15 +15,25 @@ namespace RealEstateBE.Service.Concrete
         {
             _propertyListingTypeDal = propertyListingTypeDal;
         }
+
+        public Task<PropertyListingType?>? GetPropertyListingTypeByID(int id)
+        {
+            if (id > 0)
+            {
+                return _propertyListingTypeDal.GetByIdAsync(id);
+            }
+            return null;
+        }
+
         public async Task<IEnumerable<PropertyListingType>> GetPropertyListingTypes()
         {
-            List<PropertyListingType> list= (await _propertyListingTypeDal.GetAllAsync()).ToList();
-            ServiceHelper.MoveToBottom(list,p=>p.PropertyListingTypeName.ToLower()=="other");
+            List<PropertyListingType> list = (await _propertyListingTypeDal.GetAllAsync()).ToList();
+            ServiceHelper.MoveToBottom(list, p => p.PropertyListingTypeName.ToLower() == "other");
             return list;
         }
         public async Task<bool> InsertPropertyListingType(PropertyListingTypeDTO propertyListingTypeDTO)
         {
-            PropertyListingType propertyListingType= new() { PropertyListingTypeName=propertyListingTypeDTO.PropertyListingTypeName};
+            PropertyListingType propertyListingType = new() { PropertyListingTypeName = propertyListingTypeDTO.PropertyListingTypeName };
             return await _propertyListingTypeDal.AddAsync(propertyListingType);
         }
     }

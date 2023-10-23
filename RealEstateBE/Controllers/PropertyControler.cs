@@ -13,20 +13,14 @@ namespace RealEstateBE.Controllers
     public class PropertyController : ControllerBase
     {
         private readonly IPropertyService _propertyService;
-        private readonly IPropertyTypeService _propertyTypeService;
-        private readonly IPropertyListingTypeService _propertyTypeListService;
         private readonly IMemoryCache _memoryCache;
 
         private const string ProductCacheKey = "ProductCacheKey";
 
         public PropertyController(IPropertyService propertyService,
-                                  IPropertyTypeService propertyTypeService,
-                                  IPropertyListingTypeService propertyListingTypeService,
                                   IMemoryCache memoryCache)
         {
             _propertyService = propertyService;
-            _propertyTypeService = propertyTypeService;
-            _propertyTypeListService = propertyListingTypeService;
             _memoryCache = memoryCache;
         }
 
@@ -34,25 +28,21 @@ namespace RealEstateBE.Controllers
         public async Task<IActionResult> PropertyList()
         {
             IEnumerable<Property>? properties = _memoryCache.Get<IEnumerable<Property>>(ProductCacheKey);
-            if(properties != null)
+            if (properties != null)
             {
                 return Ok(properties);
             }
 
-           return Ok(_memoryCache.Set(ProductCacheKey, await _propertyService.GetProperties()));
+            return Ok(_memoryCache.Set(ProductCacheKey, await _propertyService.GetProperties()));
         }
 
         [HttpGet(Helper.Routes.getById)]
         public async Task<IActionResult> GetPropertyById(int id)
         {
-            if (id > 0)
+            Property? property = await _propertyService.GetProperty(id);
+            if (property != null)
             {
-                Property? property= await _propertyService.GetProperty(id);
-                if (property!= null)
-                {
-                    return Ok(property);
-                }
-                return BadRequest("Property could not be found according the parameters.");
+                return Ok(property);
             }
             return BadRequest("Parameter is invalid.");
         }
@@ -70,22 +60,14 @@ namespace RealEstateBE.Controllers
 
             if (propertyDTO != null)
             {
-                //In body PropertyTypeID and PropertyListingTypeID should be valid and exist in according to their database table.
-                //So we must check whether these ID's exist in database or not. If not, return BadRequest.
+                //We should be getting SaveChanges()>0 as true, only then return Ok() 200. If not, return BadRequest.
 
-                if ((await _propertyTypeService.GetPropertyTypes()).Any(p => p.PropertyTypeID == propertyDTO.PropertyTypeID) &&
-                    (await _propertyTypeListService.GetPropertyListingTypes()).Any(p => p.PropertyListingTypeID == propertyDTO.PropertyListingTypeID))
+                if (await _propertyService.InsertProperty(propertyDTO))
                 {
-                    //We should be getting SaveChanges()>0 as true, only then return Ok() 200. If not, return BadRequest.
-
-                    if (await _propertyService.InsertProperty(propertyDTO))
-                    {
-                        _memoryCache.Remove(ProductCacheKey);
-                        return Ok(propertyDTO);
-                    }
-                    return BadRequest("Couldn't insert given property.");
+                    _memoryCache.Remove(ProductCacheKey);
+                    return Ok(propertyDTO);
                 }
-                return BadRequest("Given PropertyListingType or PropertyType are invalid.");
+                return BadRequest("Couldn't insert given property.");
             }
             return BadRequest("Please provide a valid body.");
         }
@@ -110,7 +92,7 @@ namespace RealEstateBE.Controllers
             if (id > 0)
             {
                 //After the attempt of deletion; if SaveChanges()>0 returns true, return OK(). If not, return BadRequest()
-                if(await _propertyService.DeleteProperty(id))
+                if (await _propertyService.DeleteProperty(id))
                 {
                     _memoryCache.Remove(ProductCacheKey);
                     return Ok(id);

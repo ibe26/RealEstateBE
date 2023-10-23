@@ -32,10 +32,10 @@ namespace RealEstateBE.Controllers
             {
                 if(await _propertyListingTypeService.InsertPropertyListingType(propertyListingTypeDTO))
                 {
-                    return Ok();
+                    return Ok(propertyListingTypeDTO);
                 }
             }
-            return BadRequest();
+            return BadRequest("Given parameter is invalid.");
         }
     }
 }

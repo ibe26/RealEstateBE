@@ -16,14 +16,7 @@ namespace RealEstateBE.Data.Concrete
                 return SaveChanges();
         }
 
-        public async Task<TEntity?> GetByIdAsync(int id)
-        {
-            if(id > 0)
-            {
-                return await _entities.FindAsync(id);
-            }
-            return null;
-        }
+        
 
         public bool Update(TEntity entity)
         {

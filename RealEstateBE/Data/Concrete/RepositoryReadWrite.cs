@@ -14,6 +14,14 @@ namespace RealEstateBE.Data.Concrete
         {
             return await _entities.ToListAsync();
         }
+        public async Task<TEntity?> GetByIdAsync(int id)
+        {
+            if (id > 0)
+            {
+                return await _entities.FindAsync(id);
+            }
+            return null;
+        }
         public async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _entities.SingleOrDefaultAsync(predicate);
