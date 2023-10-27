@@ -36,6 +36,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseCors(m => m.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 

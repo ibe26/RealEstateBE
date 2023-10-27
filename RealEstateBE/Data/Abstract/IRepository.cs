@@ -7,7 +7,7 @@ namespace RealEstateBE.Data.Abstract
         Task<bool> DeleteByIdAsync(int id);
 
         Task<IEnumerable<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> predicate);
-        bool Update(TEntity entity);
+        TEntity Update(TEntity entity);
 
     }
 

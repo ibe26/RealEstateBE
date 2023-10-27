@@ -26,17 +26,19 @@ namespace RealEstateBE.Data.Concrete
         {
             return await _entities.SingleOrDefaultAsync(predicate);
         }
-        public async virtual Task<bool> AddAsync(TEntity entity)
+        public async virtual Task<TEntity?> AddAsync(TEntity entity)
         {
             if (entity is not null)
             {
                 await _entities.AddAsync(entity);
+                SaveChanges();
+                return entity;
             }
-            return SaveChanges();
+            return null;
         }
-        public bool SaveChanges()
+        public int SaveChanges()
         {
-            return _context.SaveChanges() > 0;
+            return _context.SaveChanges();
         }
     }
 }

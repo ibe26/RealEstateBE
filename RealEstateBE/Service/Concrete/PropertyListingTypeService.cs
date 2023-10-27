@@ -31,7 +31,7 @@ namespace RealEstateBE.Service.Concrete
             ServiceHelper.MoveToBottom(list, p => p.PropertyListingTypeName.ToLower() == "other");
             return list;
         }
-        public async Task<bool> InsertPropertyListingType(PropertyListingTypeDTO propertyListingTypeDTO)
+        public async Task<PropertyListingType?>? InsertPropertyListingType(PropertyListingTypeDTO propertyListingTypeDTO)
         {
             PropertyListingType propertyListingType = new() { PropertyListingTypeName = propertyListingTypeDTO.PropertyListingTypeName };
             return await _propertyListingTypeDal.AddAsync(propertyListingType);

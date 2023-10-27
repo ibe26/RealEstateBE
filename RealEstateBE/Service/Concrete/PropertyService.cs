@@ -56,7 +56,7 @@ namespace RealEstateBE.Service.Concrete
             return null;
         }
 
-        public async Task<bool> InsertProperty(PropertyDTO propertyDTO)
+        public async Task<Property?> InsertProperty(PropertyDTO propertyDTO)
         {
             //PropertyTypeID and PropertyListingTypeID should be valid and exist in according to their database table.
             //So we must check whether these ID's exist in database or not. If not, return BadRequest.
@@ -76,12 +76,13 @@ namespace RealEstateBE.Service.Concrete
                     BathroomCount = propertyDTO.BathroomCount,
                     BedroomCount = propertyDTO.BedroomCount,
                 };
-                return await _propertyDal.AddAsync(property);
+                var x = await _propertyDal.AddAsync(property);
+                return x;
             }
-            return false;
+            return null;
         }
 
-        public async Task<bool> UpdateProperty(PropertyDTO propertyDTO, int propertyId)
+        public async Task<Property?> UpdateProperty(PropertyDTO propertyDTO, int propertyId)
         {
             Property? property = await _propertyDal.GetByIdAsync(propertyId);
             if (property != null)
@@ -96,7 +97,7 @@ namespace RealEstateBE.Service.Concrete
                 propertyDTO.Size = propertyDTO.Size;
                 return _propertyDal.Update(property);
             }
-            else return false;
+            else return null;
 
         }
     }

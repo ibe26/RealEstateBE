@@ -9,8 +9,8 @@ namespace RealEstateBE.Data.Abstract
 
         Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
-        Task<bool> AddAsync(TEntity entity);
+        Task<TEntity?> AddAsync(TEntity entity);
 
-        bool SaveChanges();
+        int SaveChanges();
     }
 }

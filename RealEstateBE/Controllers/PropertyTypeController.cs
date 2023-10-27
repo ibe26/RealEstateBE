@@ -29,10 +29,8 @@ namespace RealEstateBE.Controllers
         {
             if (property != null)
             {
-                if(await _propertyTypeService.InsertPropertyType(property))
-                {
-                    return Ok();
-                }
+                return Ok(await _propertyTypeService.InsertPropertyType(property));
+                
             }
             return BadRequest();
         }

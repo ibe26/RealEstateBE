@@ -7,6 +7,6 @@ namespace RealEstateBE.Service.Abstract
     {
         public Task<IEnumerable<PropertyListingType>> GetPropertyListingTypes();
         public Task<PropertyListingType?>? GetPropertyListingTypeByID(int id);
-        public Task<bool> InsertPropertyListingType(PropertyListingTypeDTO propertyListingTypeDTO);
+        public Task<PropertyListingType?>? InsertPropertyListingType(PropertyListingTypeDTO propertyListingTypeDTO);
     }
 }

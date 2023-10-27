@@ -13,15 +13,16 @@ namespace RealEstateBE.Data.Concrete
                 {
                    _entities.Remove(t);
                 }
-                return SaveChanges();
+                return SaveChanges()>0;
         }
 
         
 
-        public bool Update(TEntity entity)
+        public TEntity Update(TEntity entity)
         {
             _entities.Update(entity);
-            return SaveChanges();
+             SaveChanges();
+            return entity;
         }
 
         public async Task<IEnumerable<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> predicate)
