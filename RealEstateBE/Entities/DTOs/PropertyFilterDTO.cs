@@ -11,10 +11,10 @@ namespace RealEstateBE.Entities.DTOs
         public int? MaxPrice { get; set; } = int.MaxValue;
         public Int16? BedroomCount { get; set; }
         public Int16? BathroomCount { get; set; }
-        public int? Size { get; set; }
         public string? City { get; set; } = String.Empty;
         public string? District { get; set; } = String.Empty;
-        public string Quarter { get; set; } = String.Empty;
+        public string? Quarter { get; set; } = String.Empty;
+        public int? TimeFilter  { get; set; }
 
     }
 }

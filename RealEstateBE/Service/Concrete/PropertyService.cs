@@ -37,6 +37,7 @@ namespace RealEstateBE.Service.Concrete
             (propertyFilterDTO.City.IsNullOrEmpty() || p.City.ToLower().Equals(propertyFilterDTO.City!.ToLower())) &&
             (propertyFilterDTO.District.IsNullOrEmpty() || p.District.ToLower().Equals(propertyFilterDTO.District!.ToLower())) &&
             (propertyFilterDTO.Quarter.IsNullOrEmpty() || p.Quarter.ToLower().Equals(propertyFilterDTO.Quarter!.ToLower())) &&
+            (propertyFilterDTO.TimeFilter==0 || (DateTime.Now.Day-propertyFilterDTO.TimeFilter)<=p.DateListed.Day) &&
             (p.PropertyPrice >= propertyFilterDTO.MinPrice)
             );
             return filteredProperties;
@@ -72,7 +73,8 @@ namespace RealEstateBE.Service.Concrete
                     City = propertyDTO.City,
                     District = propertyDTO.District,
                     Quarter = propertyDTO.Quarter,
-                    Size = propertyDTO.Size,
+                    GrossArea = propertyDTO.GrossArea,
+                    NetArea = propertyDTO.NetArea,
                     BathroomCount = propertyDTO.BathroomCount,
                     BedroomCount = propertyDTO.BedroomCount,
                 };
@@ -94,7 +96,8 @@ namespace RealEstateBE.Service.Concrete
                 property.City = propertyDTO.City;
                 propertyDTO.District = propertyDTO.District;
                 propertyDTO.Quarter = propertyDTO.Quarter;
-                propertyDTO.Size = propertyDTO.Size;
+                propertyDTO.GrossArea = propertyDTO.GrossArea;
+                propertyDTO.NetArea = propertyDTO.NetArea;
                 return _propertyDal.Update(property);
             }
             else return null;

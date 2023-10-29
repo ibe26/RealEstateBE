@@ -17,13 +17,17 @@ namespace RealEstateBE.Entities.DTOs
         [Required]
         public Int16 BathroomCount { get; set; }
         [Required]
-        public int Size { get; set; }
+        public int GrossArea { get; set; }
+        [Required]
+        public int NetArea { get; set; }
         [Required]
         public string City { get; set; } = String.Empty;
         [Required]
         public string District { get; set; } = String.Empty;
         [Required]
         public string Quarter { get; set; } = String.Empty;
+        [Required]
+        public DateTime DateListed { get; set; }
  
     }
 }
