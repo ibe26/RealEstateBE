@@ -77,6 +77,7 @@ namespace RealEstateBE.Service.Concrete
                     NetArea = propertyDTO.NetArea,
                     BathroomCount = propertyDTO.BathroomCount,
                     BedroomCount = propertyDTO.BedroomCount,
+                    DateListed = DateTime.Now,
                 };
                 var x = await _propertyDal.AddAsync(property);
                 return x;

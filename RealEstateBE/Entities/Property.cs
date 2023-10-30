@@ -7,6 +7,9 @@ namespace RealEstateBE.Model
     {
         [Required, Key]
         public int PropertyID { get; set; }
+        [Required]
+        public DateTime DateListed { get; set; }
+
         //[Required]
         //public string PropertyName { get; set; } = String.Empty;
         //[Required]

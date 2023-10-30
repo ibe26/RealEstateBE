@@ -26,8 +26,6 @@ namespace RealEstateBE.Entities.DTOs
         public string District { get; set; } = String.Empty;
         [Required]
         public string Quarter { get; set; } = String.Empty;
-        [Required]
-        public DateTime DateListed { get; set; }
  
     }
 }
