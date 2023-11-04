@@ -14,6 +14,8 @@ namespace RealEstateBE.Entities.DTOs
         public string? City { get; set; } = String.Empty;
         public string? District { get; set; } = String.Empty;
         public string? Quarter { get; set; } = String.Empty;
+        public bool? Balcony { get; set; }
+        public string? HeatSystem { get; set; }
         public int? TimeFilter  { get; set; }
 
     }

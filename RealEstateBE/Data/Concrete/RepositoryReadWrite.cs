@@ -14,7 +14,7 @@ namespace RealEstateBE.Data.Concrete
         {
             return await _entities.ToListAsync();
         }
-        public async Task<TEntity?> GetByIdAsync(int id)
+        public virtual async Task<TEntity?> GetByIdAsync(int id)
         {
             if (id > 0)
             {

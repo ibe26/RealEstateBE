@@ -63,9 +63,10 @@ namespace RealEstateBE.Controllers
             {
                 //We should be getting SaveChanges()>0 as true, only then return Ok() 200. If not, return BadRequest.
 
-                var property = await _propertyService.InsertProperty(propertyDTO);
-                if (property != null)
+                var _property = await _propertyService.InsertProperty(propertyDTO);
+                if (_property != null)
                 {
+                    Property property = await _propertyService.GetProperty(_property.PropertyID);
                     _memoryCache.Remove(ProductCacheKey);
                     return Ok(property);
                 }

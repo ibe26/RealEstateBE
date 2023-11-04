@@ -17,6 +17,8 @@ namespace RealEstateBE.Entities.DTOs
         [Required]
         public Int16 BathroomCount { get; set; }
         [Required]
+        public bool Balcony { get; set; }
+        [Required]
         public int GrossArea { get; set; }
         [Required]
         public int NetArea { get; set; }
@@ -26,6 +28,11 @@ namespace RealEstateBE.Entities.DTOs
         public string District { get; set; } = String.Empty;
         [Required]
         public string Quarter { get; set; } = String.Empty;
- 
+        public string Description { get; set; }=String.Empty;
+
+        [Required]
+        public int Dues { get; set; }
+        [Required]
+        public string HeatSystem { get; set; } = String.Empty;
     }
 }

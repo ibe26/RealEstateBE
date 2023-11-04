@@ -38,6 +38,8 @@ namespace RealEstateBE.Service.Concrete
             (propertyFilterDTO.District.IsNullOrEmpty() || p.District.ToLower().Equals(propertyFilterDTO.District!.ToLower())) &&
             (propertyFilterDTO.Quarter.IsNullOrEmpty() || p.Quarter.ToLower().Equals(propertyFilterDTO.Quarter!.ToLower())) &&
             (propertyFilterDTO.TimeFilter==0 || (DateTime.Now.Day-propertyFilterDTO.TimeFilter)<=p.DateListed.Day) &&
+            (propertyFilterDTO.Balcony== null || p.Balcony==propertyFilterDTO.Balcony) &&
+            (propertyFilterDTO.HeatSystem.IsNullOrEmpty() || p.HeatSystem.ToLower().Equals(propertyFilterDTO.HeatSystem!.ToLower())) &&
             (p.PropertyPrice >= propertyFilterDTO.MinPrice)
             );
             return filteredProperties;
@@ -68,7 +70,7 @@ namespace RealEstateBE.Service.Concrete
                 {
                     PropertyName = propertyDTO.PropertyName,
                     PropertyTypeID = propertyDTO.PropertyTypeID,
-                    PropertyListingTypeID = propertyDTO.PropertyTypeID,
+                    PropertyListingTypeID = propertyDTO.PropertyListingTypeID,
                     PropertyPrice = propertyDTO.PropertyPrice,
                     City = propertyDTO.City,
                     District = propertyDTO.District,
@@ -78,6 +80,10 @@ namespace RealEstateBE.Service.Concrete
                     BathroomCount = propertyDTO.BathroomCount,
                     BedroomCount = propertyDTO.BedroomCount,
                     DateListed = DateTime.Now,
+                    Balcony=propertyDTO.Balcony,
+                    Description=propertyDTO.Description,
+                    Dues=propertyDTO.Dues,
+                    HeatSystem=propertyDTO.HeatSystem,
                 };
                 var x = await _propertyDal.AddAsync(property);
                 return x;
@@ -95,10 +101,15 @@ namespace RealEstateBE.Service.Concrete
                 property.PropertyListingTypeID = propertyDTO.PropertyTypeID;
                 property.PropertyPrice = propertyDTO.PropertyPrice;
                 property.City = propertyDTO.City;
-                propertyDTO.District = propertyDTO.District;
-                propertyDTO.Quarter = propertyDTO.Quarter;
-                propertyDTO.GrossArea = propertyDTO.GrossArea;
-                propertyDTO.NetArea = propertyDTO.NetArea;
+                property.District = propertyDTO.District;
+                property.Quarter = propertyDTO.Quarter;
+                property.GrossArea = propertyDTO.GrossArea;
+                property.NetArea = propertyDTO.NetArea;
+                property.Balcony = propertyDTO.Balcony;
+                property.Description = propertyDTO.Description;
+                property.HeatSystem = propertyDTO.HeatSystem;
+                property.Dues = propertyDTO.Dues;
+
                 return _propertyDal.Update(property);
             }
             else return null;
