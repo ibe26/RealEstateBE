@@ -84,6 +84,7 @@ namespace RealEstateBE.Service.Concrete
                     Description=propertyDTO.Description,
                     Dues=propertyDTO.Dues,
                     HeatSystem=propertyDTO.HeatSystem,
+                    BuildedYear=propertyDTO.BuildedYear,
                 };
                 var x = await _propertyDal.AddAsync(property);
                 return x;
@@ -109,6 +110,7 @@ namespace RealEstateBE.Service.Concrete
                 property.Description = propertyDTO.Description;
                 property.HeatSystem = propertyDTO.HeatSystem;
                 property.Dues = propertyDTO.Dues;
+                property.BuildedYear = propertyDTO.BuildedYear;
 
                 return _propertyDal.Update(property);
             }

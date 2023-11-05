@@ -33,6 +33,8 @@ namespace RealEstateBE.Entities.DTOs
         [Required]
         public int Dues { get; set; }
         [Required]
+        public short BuildedYear { get; set; }
+        [Required]
         public string HeatSystem { get; set; } = String.Empty;
     }
 }
