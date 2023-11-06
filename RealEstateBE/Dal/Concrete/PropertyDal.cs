@@ -9,7 +9,7 @@ namespace RealEstateBE.Dal.Concrete
     {
         public override async Task<IEnumerable<Property>> GetAllAsync()
         {
-            return await _entities.Include(p=>p.PropertyType).Include(p=>p.PropertyListingType).ToListAsync();
+            return await _entities.Include(p=>p.PropertyType).Include(p=>p.PropertyListingType).OrderByDescending(p=>p.DateListed).ToListAsync();
         }
         public override async Task<Property?> GetByIdAsync(int id)
         {

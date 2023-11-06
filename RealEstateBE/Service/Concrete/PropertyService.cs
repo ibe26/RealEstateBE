@@ -40,7 +40,8 @@ namespace RealEstateBE.Service.Concrete
             (propertyFilterDTO.BedroomCount == 0 || p.BedroomCount == propertyFilterDTO.BedroomCount) &&
             (propertyFilterDTO.Balcony == null || p.Balcony == propertyFilterDTO.Balcony) &&
             (propertyFilterDTO.HeatSystem.IsNullOrEmpty() || p.HeatSystem.ToLower().Equals(propertyFilterDTO.HeatSystem!.ToLower())) &&
-            (p.PropertyPrice >= propertyFilterDTO.MinPrice)
+            (p.PropertyPrice >= propertyFilterDTO.MinPrice) &&
+            (p.PropertyPrice<= propertyFilterDTO.MaxPrice)
             );
             return filteredProperties;
         }
