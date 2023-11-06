@@ -37,8 +37,8 @@ namespace RealEstateBE.Service.Concrete
             (propertyFilterDTO.City.IsNullOrEmpty() || p.City.ToLower().Equals(propertyFilterDTO.City!.ToLower())) &&
             (propertyFilterDTO.District.IsNullOrEmpty() || p.District.ToLower().Equals(propertyFilterDTO.District!.ToLower())) &&
             (propertyFilterDTO.Quarter.IsNullOrEmpty() || p.Quarter.ToLower().Equals(propertyFilterDTO.Quarter!.ToLower())) &&
-            (propertyFilterDTO.TimeFilter==0 || (DateTime.Now.Day-propertyFilterDTO.TimeFilter)<=p.DateListed.Day) &&
-            (propertyFilterDTO.Balcony== null || p.Balcony==propertyFilterDTO.Balcony) &&
+            (propertyFilterDTO.BedroomCount == 0 || p.BedroomCount == propertyFilterDTO.BedroomCount) &&
+            (propertyFilterDTO.Balcony == null || p.Balcony == propertyFilterDTO.Balcony) &&
             (propertyFilterDTO.HeatSystem.IsNullOrEmpty() || p.HeatSystem.ToLower().Equals(propertyFilterDTO.HeatSystem!.ToLower())) &&
             (p.PropertyPrice >= propertyFilterDTO.MinPrice)
             );
@@ -80,11 +80,11 @@ namespace RealEstateBE.Service.Concrete
                     BathroomCount = propertyDTO.BathroomCount,
                     BedroomCount = propertyDTO.BedroomCount,
                     DateListed = DateTime.Now,
-                    Balcony=propertyDTO.Balcony,
-                    Description=propertyDTO.Description,
-                    Dues=propertyDTO.Dues,
-                    HeatSystem=propertyDTO.HeatSystem,
-                    BuildedYear=propertyDTO.BuildedYear,
+                    Balcony = propertyDTO.Balcony,
+                    Description = propertyDTO.Description,
+                    Dues = propertyDTO.Dues,
+                    HeatSystem = propertyDTO.HeatSystem,
+                    BuildedYear = propertyDTO.BuildedYear,
                 };
                 var x = await _propertyDal.AddAsync(property);
                 return x;
