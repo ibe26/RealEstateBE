@@ -15,8 +15,9 @@ namespace RealEstateBE.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
         [HttpPost(Routes.uploadImages)]
-        public async Task<IActionResult> UploadImage(IFormFileCollection formFiles, int propertyID)
+        public async Task<IActionResult> UploadImage(int propertyID)
         {
+            var formFiles=Request.Form.Files;
             int succesfulUpload = 0;
             try
             {
@@ -44,7 +45,7 @@ namespace RealEstateBE.Controllers
 
                 throw;
             }
-            return (succesfulUpload - formFiles.Count != 0) ? BadRequest("Some files couldn't be uploaded.") : Ok("Files Uploaded successfully.");
+            return (succesfulUpload - formFiles.Count != 0) ? BadRequest("Some files couldn't be uploaded.") : Ok("Files Uploaded successfully." +$"{succesfulUpload}");
         }
 
         [HttpGet(Routes.getImages)]

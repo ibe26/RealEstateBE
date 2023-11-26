@@ -76,11 +76,11 @@ namespace RealEstateBE.Controllers
         }
 
         [HttpPost(Routes.update)]
-        public IActionResult UpdateProperty([FromBody] PropertyDTO propertyDTO, int id)
+        public async Task<IActionResult> UpdateProperty([FromBody] PropertyDTO propertyDTO, int id)
         {
             if (propertyDTO != null && id > 0)
             {
-                var property = _propertyService.UpdateProperty(propertyDTO!, id);
+                var property = await _propertyService.UpdateProperty(propertyDTO!, id);
                 if (property != null)
                 {
                     _memoryCache.Remove(ProductCacheKey);

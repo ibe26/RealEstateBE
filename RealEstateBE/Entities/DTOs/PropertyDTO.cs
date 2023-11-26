@@ -28,13 +28,15 @@ namespace RealEstateBE.Entities.DTOs
         public string District { get; set; } = String.Empty;
         [Required]
         public string Quarter { get; set; } = String.Empty;
-        public string Description { get; set; }=String.Empty;
-
         [Required]
         public int Dues { get; set; }
         [Required]
         public short BuildedYear { get; set; }
         [Required]
         public string HeatSystem { get; set; } = String.Empty;
+        public short? Floor { get; set; }
+        public short? TotalFloor { get; set; }
+        public string? Description { get; set; } = String.Empty;
+
     }
 }
