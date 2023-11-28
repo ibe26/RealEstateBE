@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateBE.Controllers.Helper;
+using RealEstateBE.Entities;
 
 namespace RealEstateBE.Controllers
 {
@@ -17,7 +18,7 @@ namespace RealEstateBE.Controllers
         [HttpPost(Routes.uploadImages)]
         public async Task<IActionResult> UploadImage(int propertyID)
         {
-            var formFiles=Request.Form.Files;
+            var formFiles = Request.Form.Files;
             int succesfulUpload = 0;
             try
             {
@@ -45,13 +46,13 @@ namespace RealEstateBE.Controllers
 
                 throw;
             }
-            return (succesfulUpload - formFiles.Count != 0) ? BadRequest("Some files couldn't be uploaded.") : Ok("Files Uploaded successfully." +$"{succesfulUpload}");
+            return (succesfulUpload - formFiles.Count != 0) ? BadRequest("Some files couldn't be uploaded.") : Ok($"{succesfulUpload} " + "Files Uploaded successfully");
         }
 
         [HttpGet(Routes.getImages)]
         public async Task<IActionResult> GetImages(int propertyID)
         {
-            List<string> imageUrList = new();
+            List<Photo> photoList = new();
             string hostUrl = $@"{Request.Scheme}://{Request.Host}{Request.PathBase}";
             try
             {
@@ -67,7 +68,12 @@ namespace RealEstateBE.Controllers
                         if (System.IO.File.Exists(imagePath))
                         {
                             string imageUrl = hostUrl + $@"/Upload/Property{propertyID}/{fileName}";
-                            imageUrList.Add(imageUrl);
+                            var photo = new Photo()
+                            {
+                                name = fileName,
+                                url = imageUrl,
+                            };
+                            photoList.Add(photo);
                         }
                     }
                 }
@@ -77,7 +83,7 @@ namespace RealEstateBE.Controllers
 
                 throw;
             }
-            return Ok(imageUrList);
+            return Ok(photoList);
         }
         [NonAction]
         private string GetFilePath(int propertyID)
