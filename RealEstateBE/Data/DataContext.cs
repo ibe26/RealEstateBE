@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RealEstateBE.Model;
+using RealEstateBE.Entities;
+using RealEstateBE.Entities;
 
 namespace RealEstateBE.Data
 {
@@ -20,5 +21,6 @@ namespace RealEstateBE.Data
         public DbSet<Property> Properties { get; set; }
         public DbSet<PropertyType> PropertyTypes { get; set; }
         public DbSet<PropertyListingType> PropertyListingTypes { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

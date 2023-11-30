@@ -1,7 +1,7 @@
-﻿using RealEstateBE.Entities.DTOs;
+﻿using RealEstateBE.Entities.DTOs.Property;
 using System.ComponentModel.DataAnnotations;
 
-namespace RealEstateBE.Model
+namespace RealEstateBE.Entities
 {
     public class Property : PropertyDTO
     {

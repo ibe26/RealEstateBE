@@ -1,8 +1,8 @@
-﻿using RealEstateBE.Entities.DTOs;
-using RealEstateBE.Model;
+﻿using RealEstateBE.Entities;
 using RealEstateBE.Dal.Abstract;
 using RealEstateBE.Service.Abstract;
 using Microsoft.IdentityModel.Tokens;
+using RealEstateBE.Entities.DTOs.Property;
 
 namespace RealEstateBE.Service.Concrete
 {

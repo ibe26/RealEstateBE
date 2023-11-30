@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using RealEstateBE.Dal.Abstract;
 using RealEstateBE.Data;
-using RealEstateBE.Entities.DTOs;
-using RealEstateBE.Model;
+using RealEstateBE.Entities.DTOs.Property;
+using RealEstateBE.Entities;
 using RealEstateBE.Service.Abstract;
 
 namespace RealEstateBE.Service.Concrete

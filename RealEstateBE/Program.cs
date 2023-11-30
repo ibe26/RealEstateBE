@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.IdentityModel.Tokens;
 using RealEstateBE.Dal.Abstract;
 using RealEstateBE.Dal.Concrete;
 using RealEstateBE.Data;
 using RealEstateBE.Service.Abstract;
 using RealEstateBE.Service.Concrete;
 using System.Configuration;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,12 +22,34 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IPropertyTypeDal, PropertyTypeDal>();
 builder.Services.AddScoped<IPropertyListingTypeDal, PropertyListingTypeDal>();
 builder.Services.AddScoped<IPropertyDal, PropertyDal>();
+builder.Services.AddScoped<IUserDal, UserDal>();
 
 builder.Services.AddScoped<IPropertyTypeService,PropertyTypeService>();
 builder.Services.AddScoped<IPropertyListingTypeService,PropertyListingTypeService>();
 builder.Services.AddScoped<IPropertyService,PropertyService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IMemoryCache, MemoryCache>();
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme= JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!)),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
+    };
+});
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 

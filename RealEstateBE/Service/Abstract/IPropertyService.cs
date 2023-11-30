@@ -1,5 +1,5 @@
-﻿using RealEstateBE.Entities.DTOs;
-using RealEstateBE.Model;
+﻿using RealEstateBE.Entities.DTOs.Property;
+using RealEstateBE.Entities;
 
 namespace RealEstateBE.Service.Abstract
 {

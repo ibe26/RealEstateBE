@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RealEstateBE.Entities.DTOs
+namespace RealEstateBE.Entities.DTOs.Property
 {
     public class PropertyListingTypeDTO
     {
         [Required]
-        public string PropertyListingTypeName { get; set; }=String.Empty;
+        public string PropertyListingTypeName { get; set; } = string.Empty;
     }
 }

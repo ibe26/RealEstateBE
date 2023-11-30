@@ -1,4 +1,4 @@
-﻿using RealEstateBE.Model;
+﻿using RealEstateBE.Entities;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Xml.Linq;

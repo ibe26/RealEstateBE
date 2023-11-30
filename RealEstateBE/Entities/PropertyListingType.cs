@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RealEstateBE.Model
+namespace RealEstateBE.Entities
 {
     public class PropertyListingType
     {

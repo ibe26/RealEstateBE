@@ -2,9 +2,9 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Caching.Memory;
 using RealEstateBE.Controllers.Helper;
-using RealEstateBE.Entities.DTOs;
-using RealEstateBE.Model;
+using RealEstateBE.Entities.DTOs.Property;
 using RealEstateBE.Service.Abstract;
+using RealEstateBE.Entities;
 using System.IO;
 
 namespace RealEstateBE.Controllers

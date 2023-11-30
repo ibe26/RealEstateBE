@@ -1,6 +1,6 @@
 ﻿using RealEstateBE.Dal.Abstract;
 using RealEstateBE.Data.Concrete;
-using RealEstateBE.Model;
+using RealEstateBE.Entities;
 
 namespace RealEstateBE.Dal.Concrete
 {

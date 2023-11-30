@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace RealEstateBE.Data.Concrete
 {
-    public class Repository<TEntity> :RepositoryReadWrite<TEntity>, IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity> :RepositoryReadWrite<TEntity>, IRepositoryReadWrite<TEntity> where TEntity : class
     {
         public async Task<bool> DeleteByIdAsync(int id)
         {

@@ -1,5 +1,5 @@
 ﻿using RealEstateBE.Data.Abstract;
-using RealEstateBE.Model;
+using RealEstateBE.Entities;
 
 namespace RealEstateBE.Dal.Abstract
 {
