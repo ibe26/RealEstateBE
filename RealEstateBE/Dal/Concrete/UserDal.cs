@@ -2,6 +2,7 @@
 using RealEstateBE.Dal.Abstract;
 using RealEstateBE.Data.Concrete;
 using RealEstateBE.Entities;
+using RealEstateBE.Entities.DTOs.User;
 using System.Linq.Expressions;
 
 namespace RealEstateBE.Dal.Concrete
@@ -12,5 +13,6 @@ namespace RealEstateBE.Dal.Concrete
         {
            return await base._entities.AnyAsync(predicate);
         }
+
     }
 }

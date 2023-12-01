@@ -7,6 +7,6 @@ namespace RealEstateBE.Entities.DTOs.User
         [Required]
         public string Email { get; set; }
         [Required]
-        public byte[] Password { get; set; }
+        public string Password { get; set; }
     }
 }

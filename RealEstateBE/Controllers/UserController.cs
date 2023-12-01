@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using RealEstateBE.Entities.DTOs.User;
 using RealEstateBE.Entities;
@@ -24,42 +22,28 @@ namespace RealEstateBE.Controllers
             this._userService = userService;
             this._configuration= configuration;
         }
-        [HttpGet]
-        public async Task<IActionResult> Users()
-        {
-            
-        }
 
         [HttpGet("{UserID}")]
-        public async Task<IActionResult> UserWithPosts(int UserID)
+        public async Task<IActionResult> GetUser(int UserID)
         {
-            
+            var user=await _userService.GetUser(UserID);
+            if(user != null)
+            {
+                return Ok(user);
+            }
+            return BadRequest("User is not found.");
         }
 
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDTO registerUser)
         {
-            if (await uow.UserRepository.AnyAsync(u => u.Nickname == registerUser.NickName || u.Email == registerUser.Email))
+            if (await _userService.AnyUser(u =>u.Email == registerUser.Email))
             {
                 return BadRequest("User Alrady Exists.");
             }
-            byte[] passwordHash, passwordKey;
-            using (var hmac = new HMACSHA256())
-            {
-                passwordKey = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(registerUser.Password));
-            }
-
-            var user = new User
-            {
-                Email = registerUser.Email,
-                Password = passwordHash,
-                PasswordKey = passwordKey,
-            };
-            await uow.UserRepository.InsertAsync(user);
-            await uow.SaveAsync();
-            return Ok(user);
+           
+            return Ok(await _userService.Register(registerUser));
         }
 
         [HttpPost("login")]
@@ -91,26 +75,7 @@ namespace RealEstateBE.Controllers
         }
 
         [NonAction]
-        private string CreateJWT(LoginDTO user)
-        {
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(user.Password + _configuration["JwtSettings:Key"]!));
-            var claims = new Claim[]
-            {
-                new Claim(ClaimTypes.Email,user.Email)
-            };
-
-            var signingCredantials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddDays(30),
-                SigningCredentials = signingCredantials
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
+        
 
         private bool MatchPassword(string passwordText, byte[] UserPaswword, byte[] PasswordKey)
         {
