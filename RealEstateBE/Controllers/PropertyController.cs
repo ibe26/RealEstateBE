@@ -6,6 +6,11 @@ using RealEstateBE.Entities.DTOs.Property;
 using RealEstateBE.Service.Abstract;
 using RealEstateBE.Entities;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.Intrinsics.X86;
+using Microsoft.AspNetCore.Http.HttpResults;
+using System.Net;
 
 namespace RealEstateBE.Controllers
 {
@@ -24,7 +29,6 @@ namespace RealEstateBE.Controllers
             _propertyService = propertyService;
             _memoryCache = memoryCache;
         }
-
         [HttpGet(Routes.getList)]
         public async Task<IActionResult> PropertyList()
         {
@@ -66,7 +70,7 @@ namespace RealEstateBE.Controllers
                 var _property = await _propertyService.InsertProperty(propertyDTO);
                 if (_property != null)
                 {
-                    Property property = await _propertyService.GetProperty(_property.PropertyID);
+                    Property? property = await _propertyService.GetProperty(_property.PropertyID);
                     _memoryCache.Remove(ProductCacheKey);
                     return Ok(property);
                 }
@@ -90,8 +94,24 @@ namespace RealEstateBE.Controllers
             return BadRequest("Parameter is invalid.");
         }
         [HttpDelete(Routes.deleteById)]
+        [Authorize]
         public async Task<IActionResult> DeleteProperty(int id)
         {
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            if ( token!= null)
+            {
+                var property = await _propertyService.GetProperty(id);
+                var handler = new JwtSecurityTokenHandler();
+                var securityToken = handler.ReadJwtToken(token);
+                if(property != null)
+                {
+                    if (!securityToken.Claims.SingleOrDefault(c => c.Type.Equals("ID"))!.Value.Equals(property.UserID.ToString()))
+                    {
+                       return Unauthorized();
+                    }
+                }
+               
+            }
             //id should be valid
             if (id > 0)
             {

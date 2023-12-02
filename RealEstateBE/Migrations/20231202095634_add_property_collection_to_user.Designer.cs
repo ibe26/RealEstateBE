@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstateBE.Data;
 
@@ -11,9 +12,11 @@ using RealEstateBE.Data;
 namespace RealEstateBE.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231202095634_add_property_collection_to_user")]
+    partial class add_property_collection_to_user
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,7 +95,7 @@ namespace RealEstateBE.Migrations
                     b.Property<short?>("TotalFloor")
                         .HasColumnType("smallint");
 
-                    b.Property<int>("UserID")
+                    b.Property<int?>("UserID")
                         .HasColumnType("int");
 
                     b.HasKey("PropertyID");
@@ -189,9 +192,7 @@ namespace RealEstateBE.Migrations
 
                     b.HasOne("RealEstateBE.Entities.User", null)
                         .WithMany("Properties")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserID");
 
                     b.Navigation("PropertyListingType");
 

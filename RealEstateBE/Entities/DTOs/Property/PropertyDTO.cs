@@ -7,6 +7,8 @@ namespace RealEstateBE.Entities.DTOs.Property
         [Required]
         public string PropertyName { get; set; } = string.Empty;
         [Required]
+        public int UserID { get; set; }
+        [Required]
         public int PropertyTypeID { get; set; }
         [Required]
         public int PropertyListingTypeID { get; set; }

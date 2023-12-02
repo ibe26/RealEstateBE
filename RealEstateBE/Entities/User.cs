@@ -17,5 +17,6 @@ namespace RealEstateBE.Entities
         public byte[] Password { get; set; }
         [Required]
         public byte[] PasswordKey { get; set; }
+        public virtual IEnumerable<Property> Properties { get; set; }
     }
 }

@@ -70,6 +70,7 @@ namespace RealEstateBE.Service.Concrete
                 Property property = new()
                 {
                     PropertyName = propertyDTO.PropertyName,
+                    UserID = propertyDTO.UserID,
                     PropertyTypeID = propertyDTO.PropertyTypeID,
                     PropertyListingTypeID = propertyDTO.PropertyListingTypeID,
                     PropertyPrice = propertyDTO.PropertyPrice,
@@ -100,6 +101,7 @@ namespace RealEstateBE.Service.Concrete
             if (property != null)
             {
                 property.PropertyName = propertyDTO.PropertyName;
+                property.UserID = propertyDTO.UserID;
                 property.PropertyTypeID = propertyDTO.PropertyTypeID;
                 property.PropertyListingTypeID = propertyDTO.PropertyTypeID;
                 property.PropertyPrice = propertyDTO.PropertyPrice;

@@ -8,7 +8,7 @@
         public const string deleteById = "delete/{id}";
         public const string update = "update/{id}";
         public const string filterList = "filterList";
-        public const string uploadImages = "uploadImages";
-        public const string getImages = "getImages/{propertyID}";
+        public const string login = "login";
+        public const string register = "register";
     }
 }

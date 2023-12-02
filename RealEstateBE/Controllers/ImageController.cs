@@ -15,14 +15,14 @@ namespace RealEstateBE.Controllers
         {
             _webHostEnvironment = webHostEnvironment;
         }
-        [HttpPost(Routes.uploadImages)]
-        public async Task<IActionResult> UploadImage(int propertyID)
+        [HttpPost(Routes.insert)]
+        public async Task<IActionResult> UploadImage(int id)
         {
             var formFiles = Request.Form.Files;
             int succesfulUpload = 0;
             try
             {
-                string filePath = this._webHostEnvironment.WebRootPath + $@"\\Upload\\Property{propertyID}";
+                string filePath = this._webHostEnvironment.WebRootPath + $@"\\Upload\\Property{id}";
                 if (!Directory.Exists(filePath))
                 {
                     Directory.CreateDirectory(filePath);
@@ -49,14 +49,14 @@ namespace RealEstateBE.Controllers
             return (succesfulUpload - formFiles.Count != 0) ? BadRequest("Some files couldn't be uploaded.") : Ok($"{succesfulUpload} " + "Files Uploaded successfully");
         }
 
-        [HttpGet(Routes.getImages)]
-        public async Task<IActionResult> GetImages(int propertyID)
+        [HttpGet(Routes.getById)]
+        public async Task<IActionResult> GetImages(int id)
         {
             List<Photo> photoList = new();
             string hostUrl = $@"{Request.Scheme}://{Request.Host}{Request.PathBase}";
             try
             {
-                string filePath = GetFilePath(propertyID);
+                string filePath = GetFilePath(id);
                 if (Directory.Exists(filePath))
                 {
                     DirectoryInfo directoryInfo = new DirectoryInfo(filePath);
@@ -67,7 +67,7 @@ namespace RealEstateBE.Controllers
                         string imagePath = filePath + "\\" + fileName;
                         if (System.IO.File.Exists(imagePath))
                         {
-                            string imageUrl = hostUrl + $@"/Upload/Property{propertyID}/{fileName}";
+                            string imageUrl = hostUrl + $@"/Upload/Property{id}/{fileName}";
                             var photo = new Photo()
                             {
                                 name = fileName,
