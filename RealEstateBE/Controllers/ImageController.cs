@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RealEstateBE.Controllers.Helper;
 using RealEstateBE.Entities;
+using System.IO;
 
 namespace RealEstateBE.Controllers
 {
@@ -50,7 +51,7 @@ namespace RealEstateBE.Controllers
         }
 
         [HttpGet(Routes.getById)]
-        public async Task<IActionResult> GetImages(int id)
+        public IActionResult GetImages(int id)
         {
             List<Photo> photoList = new();
             string hostUrl = $@"{Request.Scheme}://{Request.Host}{Request.PathBase}";
@@ -84,6 +85,30 @@ namespace RealEstateBE.Controllers
                 throw;
             }
             return Ok(photoList);
+        }
+
+        [HttpDelete("delete")]
+        public IActionResult DeleteImage(int propertyId,string imageName)
+        {
+            try
+            {
+                string filePath = this._webHostEnvironment.WebRootPath + $@"\\Upload\\Property{propertyId}";
+                string imagepath = filePath + $@"\\{imageName}";
+                if (System.IO.File.Exists(imagepath))
+                {
+                    System.IO.File.Delete(imagepath);
+                    if (!Directory.EnumerateFileSystemEntries(filePath).Any())
+                    {
+                        Directory.Delete(filePath);
+                    }
+                    return Ok(propertyId);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+              return BadRequest("Such image does not exist.");
         }
         [NonAction]
         private string GetFilePath(int propertyID)
