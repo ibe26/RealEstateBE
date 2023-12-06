@@ -14,5 +14,10 @@ namespace RealEstateBE.Dal.Concrete
            return await base._entities.AnyAsync(predicate);
         }
 
+        public override async Task<IEnumerable<User>> GetAllAsync()
+        {
+            return await base._entities.Include(u=>u.Properties).ToListAsync();
+        }
+
     }
 }

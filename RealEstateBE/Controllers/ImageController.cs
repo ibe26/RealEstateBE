@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateBE.Controllers.Helper;
 using RealEstateBE.Entities;
+using RealEstateBE.Security;
+using RealEstateBE.Service.Abstract;
 using System.IO;
 
 namespace RealEstateBE.Controllers
@@ -11,14 +14,31 @@ namespace RealEstateBE.Controllers
     public class ImageController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IPropertyService _propertyService;
+        private readonly ISecurity _security;
 
-        public ImageController(IWebHostEnvironment webHostEnvironment)
+        public ImageController(IWebHostEnvironment webHostEnvironment,
+                               IPropertyService propertyService,
+                               ISecurity security)
         {
             _webHostEnvironment = webHostEnvironment;
+            _propertyService = propertyService;
+            _security= security;
         }
         [HttpPost(Routes.insert)]
+        [Authorize]
         public async Task<IActionResult> UploadImage(int id)
         {
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var property = await _propertyService.GetProperty(id);
+
+            if (token != null && property != null)
+            {
+                if (_security.IsAuthenticatedByToken(token, property.UserID))
+                {
+                    return Unauthorized();
+                }
+            }
             var formFiles = Request.Form.Files;
             int succesfulUpload = 0;
             try
@@ -44,7 +64,6 @@ namespace RealEstateBE.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
             return (succesfulUpload - formFiles.Count != 0) ? BadRequest("Some files couldn't be uploaded.") : Ok($"{succesfulUpload} " + "Files Uploaded successfully");
@@ -88,8 +107,20 @@ namespace RealEstateBE.Controllers
         }
 
         [HttpDelete("delete")]
-        public IActionResult DeleteImage(int propertyId,string imageName)
+        [Authorize]
+        public async Task<IActionResult> DeleteImage(int propertyId,string imageName)
         {
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var property = await _propertyService.GetProperty(propertyId);
+
+            if (token != null && property != null)
+            {
+                if (_security.IsAuthenticatedByToken(token, property.UserID))
+                {
+                    return Unauthorized();
+                }
+            }
+
             try
             {
                 string filePath = this._webHostEnvironment.WebRootPath + $@"\\Upload\\Property{propertyId}";

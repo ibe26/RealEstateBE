@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Runtime.Intrinsics.X86;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Net;
+using RealEstateBE.Security;
 
 namespace RealEstateBE.Controllers
 {
@@ -19,14 +20,17 @@ namespace RealEstateBE.Controllers
     public class PropertyController : ControllerBase
     {
         private readonly IPropertyService _propertyService;
+        private readonly ISecurity _security;
         private readonly IMemoryCache _memoryCache;
 
         private const string ProductCacheKey = "ProductCacheKey";
 
         public PropertyController(IPropertyService propertyService,
+                                  ISecurity security,
                                   IMemoryCache memoryCache)
         {
             _propertyService = propertyService;
+            _security= security;
             _memoryCache = memoryCache;
         }
         [HttpGet(Routes.getList)]
@@ -79,12 +83,24 @@ namespace RealEstateBE.Controllers
             return BadRequest("Please provide a valid body.");
         }
 
+        [Authorize]
         [HttpPost(Routes.update)]
         public async Task<IActionResult> UpdateProperty([FromBody] PropertyDTO propertyDTO, int id)
         {
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var property = await _propertyService.GetProperty(id);
+
+            if (token != null && property != null)
+            {
+                if (_security.IsAuthenticatedByToken(token, property.UserID))
+                {
+                    return Unauthorized();
+                }
+            }
+
             if (propertyDTO != null && id > 0)
             {
-                var property = await _propertyService.UpdateProperty(propertyDTO!, id);
+                property = await _propertyService.UpdateProperty(propertyDTO!, id);
                 if (property != null)
                 {
                     _memoryCache.Remove(ProductCacheKey);
@@ -93,24 +109,20 @@ namespace RealEstateBE.Controllers
             }
             return BadRequest("Parameter is invalid.");
         }
-        [HttpDelete(Routes.deleteById)]
+
         [Authorize]
+        [HttpDelete(Routes.deleteById)]
         public async Task<IActionResult> DeleteProperty(int id)
         {
             var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            if ( token!= null)
+            var property = await _propertyService.GetProperty(id);
+
+            if (token != null && property!=null)
             {
-                var property = await _propertyService.GetProperty(id);
-                var handler = new JwtSecurityTokenHandler();
-                var securityToken = handler.ReadJwtToken(token);
-                if(property != null)
+                if (!_security.IsAuthenticatedByToken(token,property.UserID))
                 {
-                    if (!securityToken.Claims.SingleOrDefault(c => c.Type.Equals("ID"))!.Value.Equals(property.UserID.ToString()))
-                    {
-                       return Unauthorized();
-                    }
+                    return Unauthorized();
                 }
-               
             }
             //id should be valid
             if (id > 0)
@@ -125,6 +137,5 @@ namespace RealEstateBE.Controllers
             return BadRequest("Parameter is invalid.");
         }
 
-        
     }
 }
