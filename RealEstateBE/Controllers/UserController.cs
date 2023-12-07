@@ -49,6 +49,7 @@ namespace RealEstateBE.Controllers
                 return Ok(new
                 {
                     user.UserID,
+                    user.Properties,
                     user.Email,
                     user.FirstName,
                     user.LastName,
@@ -99,6 +100,7 @@ namespace RealEstateBE.Controllers
                 Email = FoundUser.Email,
                 FirstName = FoundUser.FirstName,
                 LastName = FoundUser.LastName,
+                Properties=FoundUser.Properties,
                 Token = Token
             });
 

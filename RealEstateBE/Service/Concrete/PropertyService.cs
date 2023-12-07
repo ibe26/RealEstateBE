@@ -11,14 +11,17 @@ namespace RealEstateBE.Service.Concrete
         private readonly IPropertyDal _propertyDal;
         private readonly IPropertyTypeDal _propertyTypeDal;
         private readonly IPropertyListingTypeDal _propertyListingTypeDal;
+        private readonly IUserDal _userDal;
 
         public PropertyService(IPropertyDal propertyDal,
                                IPropertyTypeDal propertyTypeDal,
-                               IPropertyListingTypeDal propertyListingTypeDal)
+                               IPropertyListingTypeDal propertyListingTypeDal,
+                               IUserDal userDal)
         {
             _propertyDal = propertyDal;
             _propertyTypeDal = propertyTypeDal;
             _propertyListingTypeDal = propertyListingTypeDal;
+            _userDal = userDal;
         }
         public async Task<bool> DeleteProperty(int id)
         {
@@ -65,7 +68,8 @@ namespace RealEstateBE.Service.Concrete
             //PropertyTypeID and PropertyListingTypeID should be valid and exist in according to their database table.
             //So we must check whether these ID's exist in database or not. If not, return BadRequest.
             if ((await _propertyTypeDal.GetAllAsync()).Any(p => p.PropertyTypeID == propertyDTO.PropertyTypeID) &&
-                (await _propertyListingTypeDal.GetAllAsync()).Any(p => p.PropertyListingTypeID == propertyDTO.PropertyListingTypeID))
+                (await _propertyListingTypeDal.GetAllAsync()).Any(p => p.PropertyListingTypeID == propertyDTO.PropertyListingTypeID) &&
+                (await _userDal.AnyUser(u=>u.UserID==propertyDTO.UserID)))
             {
                 Property property = new()
                 {

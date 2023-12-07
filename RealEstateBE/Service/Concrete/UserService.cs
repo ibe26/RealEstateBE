@@ -77,9 +77,11 @@ namespace RealEstateBE.Service.Concrete
             }
             return new UserDTO
             {
+                UserID= FoundUser.UserID,
                 Email = FoundUser.Email,
                 FirstName = FoundUser.FirstName,
                 LastName = FoundUser.LastName,
+                Properties=FoundUser.Properties,
                 Token = Token
             };
         }
