@@ -92,7 +92,7 @@ namespace RealEstateBE.Controllers
 
             if (token != null && property != null)
             {
-                if (_security.IsAuthenticatedByToken(token, property.UserID))
+                if (!_security.IsAuthenticatedByToken(token, property.UserID))
                 {
                     return Unauthorized();
                 }

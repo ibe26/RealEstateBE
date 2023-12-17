@@ -69,7 +69,7 @@ namespace RealEstateBE.Service.Concrete
             //So we must check whether these ID's exist in database or not. If not, return BadRequest.
             if ((await _propertyTypeDal.GetAllAsync()).Any(p => p.PropertyTypeID == propertyDTO.PropertyTypeID) &&
                 (await _propertyListingTypeDal.GetAllAsync()).Any(p => p.PropertyListingTypeID == propertyDTO.PropertyListingTypeID) &&
-                (await _userDal.AnyUser(u=>u.UserID==propertyDTO.UserID)))
+                (await _userDal.GetByIdAsync(propertyDTO.UserID)!=null))
             {
                 Property property = new()
                 {
