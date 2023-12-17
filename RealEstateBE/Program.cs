@@ -2,12 +2,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
-using RealEstateBE.Dal.Abstract;
-using RealEstateBE.Dal.Concrete;
-using RealEstateBE.Data;
+//using RealEstateDataAccessLayer.Dal.Abstract;
+//using RealEstateDataAccessLayer.Dal.Concrete;
+//using RealEstateBE.Data;
 using RealEstateBE.Security;
-using RealEstateBE.Service.Abstract;
-using RealEstateBE.Service.Concrete;
+using RealEstateDataAccessLayer.Abstract;
+using RealEstateDataAccessLayer.Concrete;
+using RealEstateService.Abstract;
+using RealEstateService.Concrete;
 using System.Configuration;
 using System.Text;
 
@@ -20,15 +22,16 @@ builder.Services.AddCors();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IPropertyTypeService, PropertyTypeService>();
+builder.Services.AddScoped<IPropertyListingTypeService, PropertyListingTypeService>();
+builder.Services.AddScoped<IPropertyService, PropertyService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddScoped<IPropertyTypeDal, PropertyTypeDal>();
 builder.Services.AddScoped<IPropertyListingTypeDal, PropertyListingTypeDal>();
 builder.Services.AddScoped<IPropertyDal, PropertyDal>();
 builder.Services.AddScoped<IUserDal, UserDal>();
 
-builder.Services.AddScoped<IPropertyTypeService,PropertyTypeService>();
-builder.Services.AddScoped<IPropertyListingTypeService,PropertyListingTypeService>();
-builder.Services.AddScoped<IPropertyService,PropertyService>();
-builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IMemoryCache, MemoryCache>();
 builder.Services.AddScoped<ISecurity, Security>();

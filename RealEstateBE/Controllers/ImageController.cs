@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateBE.Controllers.Helper;
-using RealEstateBE.Entities;
+using RealEstateEntities.Entities;
 using RealEstateBE.Security;
-using RealEstateBE.Service.Abstract;
+using RealEstateService.Abstract;
 using System.IO;
 
 namespace RealEstateBE.Controllers

@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Caching.Memory;
 using RealEstateBE.Controllers.Helper;
-using RealEstateBE.Entities.DTOs.Property;
-using RealEstateBE.Service.Abstract;
-using RealEstateBE.Entities;
+using RealEstateEntities.Entities.DTOs.Property;
+using RealEstateService.Abstract;
+using RealEstateEntities.Entities;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;

@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RealEstateBE.Controllers.Helper;
-using RealEstateBE.Entities.DTOs.Property;
-using RealEstateBE.Entities;
-using RealEstateBE.Service.Abstract;
+using RealEstateEntities.Entities.DTOs.Property;
+using RealEstateService.Abstract;
 
 namespace RealEstateBE.Controllers
 {

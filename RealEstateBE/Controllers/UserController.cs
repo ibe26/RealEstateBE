@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using RealEstateBE.Entities.DTOs.User;
-using RealEstateBE.Entities;
+using RealEstateEntities.Entities.DTOs.User;
+using RealEstateEntities.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using RealEstateBE.Service.Abstract;
+using RealEstateService.Abstract;
 using RealEstateBE.Controllers.Helper;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Principal;
