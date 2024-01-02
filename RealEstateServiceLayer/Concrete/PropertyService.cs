@@ -90,7 +90,7 @@ namespace RealEstateService.Concrete
                     Description = propertyDTO.Description,
                     Dues = propertyDTO.Dues,
                     HeatSystem = propertyDTO.HeatSystem,
-                    BuildedYear = propertyDTO.BuildedYear,
+                    BuiltYear = propertyDTO.BuiltYear,
                     TotalFloor = propertyDTO.TotalFloor,
                     Floor = propertyDTO.Floor
                 };
@@ -118,7 +118,7 @@ namespace RealEstateService.Concrete
                 property.Description = propertyDTO.Description;
                 property.HeatSystem = propertyDTO.HeatSystem;
                 property.Dues = propertyDTO.Dues;
-                property.BuildedYear = propertyDTO.BuildedYear;
+                property.BuiltYear = propertyDTO.BuiltYear;
                 property.Floor = propertyDTO.Floor;
                 property.TotalFloor= propertyDTO.TotalFloor;
 

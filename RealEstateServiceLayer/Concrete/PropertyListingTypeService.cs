@@ -17,7 +17,7 @@ namespace RealEstateService.Concrete
             _propertyListingTypeDal = propertyListingTypeDal;
         }
 
-        public Task<PropertyListingType?>? GetPropertyListingTypeByID(int id)
+        public Task<PropertyListingType?> GetPropertyListingTypeByID(int id)
         {
             if (id > 0)
             {
@@ -32,7 +32,7 @@ namespace RealEstateService.Concrete
             ServiceHelper.MoveToBottom(list, p => p.PropertyListingTypeName.ToLower() == "other");
             return list;
         }
-        public async Task<PropertyListingType?>? InsertPropertyListingType(PropertyListingTypeDTO propertyListingTypeDTO)
+        public async Task<PropertyListingType?> InsertPropertyListingType(PropertyListingTypeDTO propertyListingTypeDTO)
         {
             PropertyListingType propertyListingType = new() { PropertyListingTypeName = propertyListingTypeDTO.PropertyListingTypeName };
             return await _propertyListingTypeDal.AddAsync(propertyListingType);

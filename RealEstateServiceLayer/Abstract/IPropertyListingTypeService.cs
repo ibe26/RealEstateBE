@@ -6,7 +6,7 @@ namespace RealEstateService.Abstract
     public interface IPropertyListingTypeService
     {
         public Task<IEnumerable<PropertyListingType>> GetPropertyListingTypes();
-        public Task<PropertyListingType?>? GetPropertyListingTypeByID(int id);
-        public Task<PropertyListingType?>? InsertPropertyListingType(PropertyListingTypeDTO propertyListingTypeDTO);
+        public Task<PropertyListingType?> GetPropertyListingTypeByID(int id);
+        public Task<PropertyListingType?> InsertPropertyListingType(PropertyListingTypeDTO propertyListingTypeDTO);
     }
 }

@@ -4,8 +4,8 @@ using System.Linq.Expressions;
 
 namespace RealEstateDataAccessLayer.Abstract
 {
-    public interface IUserDal:IRepositoryReadWrite<User>
+    public interface IUserDal : IRepositoryReadWrite<User>
     {
-        Task<bool> AnyUser(Expression<Func<User, bool>> predicate);
+        Task<bool> Any(Expression<Func<User, bool>> predicate);
     }
 }

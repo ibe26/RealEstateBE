@@ -41,7 +41,7 @@ namespace RealEstateEntities.Entities
         [Required]
         public int Dues { get; set; }
         [Required]
-        public short BuildedYear { get; set; }
+        public short BuiltYear { get; set; }
         [Required]
         public string HeatSystem { get; set; } = string.Empty;
         public short? Floor { get; set; }

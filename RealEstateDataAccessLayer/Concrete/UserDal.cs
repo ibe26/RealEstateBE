@@ -9,9 +9,9 @@ namespace RealEstateDataAccessLayer.Concrete
 {
     public class UserDal : RepositoryReadWrite<User>, IUserDal
     {
-        public async Task<bool> AnyUser(Expression<Func<User, bool>> predicate)
+        public async Task<bool> Any(Expression<Func<User, bool>> predicate)
         {
-           return await base._entities.AnyAsync(predicate);
+            return await base._entities.AnyAsync(predicate);
         }
 
         public override async Task<IEnumerable<User>> GetAllAsync()
@@ -21,7 +21,7 @@ namespace RealEstateDataAccessLayer.Concrete
 
         public override async Task<User?> GetByIdAsync(int id)
         {
-            return await base._entities.Include(u=>u.Properties).SingleOrDefaultAsync(u=>u.UserID==id);
+            return await base._entities.Include(u => u.Properties).SingleOrDefaultAsync(u => u.UserID == id);
         }
 
     }

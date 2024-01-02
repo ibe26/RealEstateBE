@@ -22,7 +22,7 @@ namespace RealEstateBE.Controllers
         private readonly ISecurity _security;
         private readonly IMemoryCache _memoryCache;
 
-        private const string ProductCacheKey = "ProductCacheKey";
+        private const string PropertyCacheKey = "PropertyCacheKey";
 
         public PropertyController(IPropertyService propertyService,
                                   ISecurity security,
@@ -32,16 +32,17 @@ namespace RealEstateBE.Controllers
             _security= security;
             _memoryCache = memoryCache;
         }
+
         [HttpGet(Routes.getList)]
         public async Task<IActionResult> PropertyList()
         {
-            IEnumerable<Property>? properties = _memoryCache.Get<IEnumerable<Property>>(ProductCacheKey);
+            IEnumerable<Property>? properties = _memoryCache.Get<IEnumerable<Property>>(PropertyCacheKey);
             if (properties != null)
             {
                 return Ok(properties);
             }
 
-            return Ok(_memoryCache.Set(ProductCacheKey, await _propertyService.GetProperties()));
+            return Ok(_memoryCache.Set(PropertyCacheKey, await _propertyService.GetProperties()));
         }
 
         [HttpGet(Routes.getById)]
@@ -74,7 +75,7 @@ namespace RealEstateBE.Controllers
                 if (_property != null)
                 {
                     Property? property = await _propertyService.GetProperty(_property.PropertyID);
-                    _memoryCache.Remove(ProductCacheKey);
+                    _memoryCache.Remove(PropertyCacheKey);
                     return Ok(property);
                 }
                 return BadRequest("Couldn't insert given property.");
@@ -102,7 +103,7 @@ namespace RealEstateBE.Controllers
                 property = await _propertyService.UpdateProperty(propertyDTO!, id);
                 if (property != null)
                 {
-                    _memoryCache.Remove(ProductCacheKey);
+                    _memoryCache.Remove(PropertyCacheKey);
                     return Ok(property);
                 }
             }
@@ -129,7 +130,7 @@ namespace RealEstateBE.Controllers
                 //After the attempt of deletion; if SaveChanges()>0 returns true, return OK(). If not, return BadRequest()
                 if (await _propertyService.DeleteProperty(id))
                 {
-                    _memoryCache.Remove(ProductCacheKey);
+                    _memoryCache.Remove(PropertyCacheKey);
                     return Ok(id);
                 }
             }

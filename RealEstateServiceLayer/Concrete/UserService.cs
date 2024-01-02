@@ -53,7 +53,7 @@ namespace RealEstateService.Concrete
 
         public async Task<bool> AnyUser(Expression<Func<User, bool>> expression)
         {
-            return await _userDal.AnyUser(expression);
+            return await _userDal.Any(expression);
         }
 
         public async Task<UserDTO?> Login(LoginDTO loginDTO)
@@ -63,7 +63,7 @@ namespace RealEstateService.Concrete
             {
                 return null;
             }
-            if (await _userDal.AnyUser(u => u.UserID == FoundUser.UserID))
+            if (await _userDal.Any(u => u.UserID == FoundUser.UserID))
             {
                 if (!MatchPassword(loginDTO.Password, FoundUser.Password, FoundUser.PasswordKey))
                 {

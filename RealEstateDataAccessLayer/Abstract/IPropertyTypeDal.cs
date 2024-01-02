@@ -3,7 +3,7 @@ using RealEstateEntities.Entities;
 
 namespace RealEstateDataAccessLayer.Abstract
 {
-    public interface IPropertyTypeDal:IRepositoryReadWrite<PropertyType>
+    public interface IPropertyTypeDal : IRepositoryReadWrite<PropertyType>
     {
     }
 }

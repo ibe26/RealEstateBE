@@ -11,6 +11,7 @@ namespace RealEstateDataAccessLayer.Data
             var connString =
               "Server=DESKTOP-HRQ6FH8; Database=RealEstateDB; Trusted_Connection=True;TrustServerCertificate=True";
             optionsBuilder.UseSqlServer(connString);
+            optionsBuilder.UseLazyLoadingProxies();
 
         }
         public DataContext()

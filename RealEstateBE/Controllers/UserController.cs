@@ -180,10 +180,18 @@ namespace RealEstateBE.Controllers
         public IActionResult validateToken(string token)
         {
             var handler = new JwtSecurityTokenHandler();
-            var securityToken = handler.ReadJwtToken(token);
-            if(ValidateToken(token) && securityToken!=null)
+            try
             {
-                return Ok(securityToken.Claims.SingleOrDefault(c => c.Type.Equals("ID")).Value);
+                var securityToken = handler.ReadJwtToken(token);
+                if (ValidateToken(token) && securityToken != null)
+                {
+                    return Ok(securityToken.Claims.SingleOrDefault(c => c.Type.Equals("ID")).Value);
+                }
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
             }
             return BadRequest();
         }

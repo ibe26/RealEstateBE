@@ -27,7 +27,7 @@ namespace RealEstateService.Concrete
 
         }
 
-        public async Task<PropertyType>? InsertPropertyType(PropertyTypeDTO propertyTypeDTO)
+        public async Task<PropertyType?> InsertPropertyType(PropertyTypeDTO propertyTypeDTO)
         {
             PropertyType propertyType=new()
             { 

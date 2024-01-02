@@ -10,7 +10,4 @@ namespace RealEstateDataAccessLayer.Data.Abstract
         TEntity Update(TEntity entity);
 
     }
-
-
-
 }
