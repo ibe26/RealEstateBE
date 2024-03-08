@@ -27,10 +27,10 @@ namespace RealEstateBE.Controllers
         }
         [HttpPost(Routes.insert)]
         [Authorize]
-        public async Task<IActionResult> UploadImage(int id)
+        public IActionResult UploadImage(int id)
         {
             var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            var property = await _propertyService.GetProperty(id);
+            var property = _propertyService.GetProperty(id).Result;
 
             if (token != null && property != null)
             {
@@ -57,7 +57,7 @@ namespace RealEstateBE.Controllers
                     }
                     using (FileStream stream = System.IO.File.Create(imagepath))
                     {
-                        await file.CopyToAsync(stream);
+                        file.CopyTo(stream);
                         succesfulUpload++;
                     }
                 }
@@ -108,10 +108,10 @@ namespace RealEstateBE.Controllers
 
         [HttpDelete("delete")]
         [Authorize]
-        public async Task<IActionResult> DeleteImage(int propertyId,string imageName)
+        public IActionResult DeleteImage(int propertyId,string imageName)
         {
             var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            var property = await _propertyService.GetProperty(propertyId);
+            var property = _propertyService.GetProperty(propertyId).Result;
 
             if (token != null && property != null)
             {

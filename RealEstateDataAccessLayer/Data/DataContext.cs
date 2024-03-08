@@ -22,5 +22,6 @@ namespace RealEstateDataAccessLayer.Data
         public DbSet<PropertyType> PropertyTypes { get; set; }
         public DbSet<PropertyListingType> PropertyListingTypes { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<OwnedProperty> OwnedProperties { get; set; }
     }
 }

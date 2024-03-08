@@ -107,7 +107,7 @@ namespace RealEstateService.Concrete
                 property.PropertyName = propertyDTO.PropertyName;
                 property.UserID = propertyDTO.UserID;
                 property.PropertyTypeID = propertyDTO.PropertyTypeID;
-                property.PropertyListingTypeID = propertyDTO.PropertyTypeID;
+                property.PropertyListingTypeID = propertyDTO.PropertyListingTypeID;
                 property.PropertyPrice = propertyDTO.PropertyPrice;
                 property.City = propertyDTO.City;
                 property.District = propertyDTO.District;

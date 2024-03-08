@@ -37,7 +37,7 @@ namespace RealEstateBE.Controllers
                 u.Email,
                 u.FirstName,
                 u.LastName,
-                u.Properties,
+                u.ListedProperties,
             }));
         }
         [HttpGet(Routes.getById)]
@@ -49,7 +49,7 @@ namespace RealEstateBE.Controllers
                 return Ok(new
                 {
                     user.UserID,
-                    user.Properties,
+                    user.ListedProperties,
                     user.Email,
                     user.FirstName,
                     user.LastName,
@@ -100,7 +100,7 @@ namespace RealEstateBE.Controllers
                 Email = FoundUser.Email,
                 FirstName = FoundUser.FirstName,
                 LastName = FoundUser.LastName,
-                Properties=FoundUser.Properties,
+                Properties=FoundUser.ListedProperties,
                 Token = Token
             });
 

@@ -4,12 +4,7 @@ using RealEstateBE.Controllers.Helper;
 using RealEstateEntities.Entities.DTOs.Property;
 using RealEstateService.Abstract;
 using RealEstateEntities.Entities;
-using System.IO;
 using Microsoft.AspNetCore.Authorization;
-using System.IdentityModel.Tokens.Jwt;
-using System.Runtime.Intrinsics.X86;
-using Microsoft.AspNetCore.Http.HttpResults;
-using System.Net;
 using RealEstateBE.Security;
 
 namespace RealEstateBE.Controllers

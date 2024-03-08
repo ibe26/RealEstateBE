@@ -10,6 +10,8 @@ using RealEstateDataAccessLayer.Abstract;
 using RealEstateDataAccessLayer.Concrete;
 using RealEstateService.Abstract;
 using RealEstateService.Concrete;
+using RealEstateServiceLayer.Abstract;
+using RealEstateServiceLayer.Concrete;
 using System.Configuration;
 using System.Text;
 
@@ -26,11 +28,13 @@ builder.Services.AddScoped<IPropertyTypeService, PropertyTypeService>();
 builder.Services.AddScoped<IPropertyListingTypeService, PropertyListingTypeService>();
 builder.Services.AddScoped<IPropertyService, PropertyService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IOwnedPropertyService,OwnedPropertyService>();
 
 builder.Services.AddScoped<IPropertyTypeDal, PropertyTypeDal>();
 builder.Services.AddScoped<IPropertyListingTypeDal, PropertyListingTypeDal>();
 builder.Services.AddScoped<IPropertyDal, PropertyDal>();
 builder.Services.AddScoped<IUserDal, UserDal>();
+builder.Services.AddScoped<IOwnedPropertyDal, OwnedPropertyDal>();
 
 
 builder.Services.AddScoped<IMemoryCache, MemoryCache>();

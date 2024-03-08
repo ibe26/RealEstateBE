@@ -81,7 +81,7 @@ namespace RealEstateService.Concrete
                 Email = FoundUser.Email,
                 FirstName = FoundUser.FirstName,
                 LastName = FoundUser.LastName,
-                Properties=FoundUser.Properties,
+                Properties=FoundUser.ListedProperties,
                 Token = Token
             };
         }
