@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstateDataAccessLayer.Data;
 
 #nullable disable
 
-namespace RealEstateBE.Migrations
+namespace RealEstateDataAccessLayer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240311183247_user-added-ownedProperties-row6")]
+    partial class useraddedownedPropertiesrow6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,9 +75,11 @@ namespace RealEstateBE.Migrations
 
             modelBuilder.Entity("RealEstateEntities.Entities.Property", b =>
                 {
-                    b.Property<Guid>("PropertyID")
+                    b.Property<int>("PropertyID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyID"));
 
                     b.Property<bool>("Balcony")
                         .HasColumnType("bit");

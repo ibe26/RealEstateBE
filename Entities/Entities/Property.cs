@@ -4,8 +4,12 @@ namespace RealEstateEntities.Entities
 {
     public class Property
     {
+        public Property()
+        {
+            this.PropertyID = Guid.NewGuid();
+        }
         [Required, Key]
-        public int PropertyID { get; set; }
+        public Guid PropertyID { get; set; }
         [Required]
         public int UserID { get; set; }
         [Required]
@@ -42,6 +46,8 @@ namespace RealEstateEntities.Entities
         public int Dues { get; set; }
         [Required]
         public short BuiltYear { get; set; }
+        [Required]
+        public bool OnListing { get; set; } = true;
         [Required]
         public string HeatSystem { get; set; } = string.Empty;
         public short? Floor { get; set; }

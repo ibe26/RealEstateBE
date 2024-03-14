@@ -23,10 +23,11 @@ namespace RealEstateService.Concrete
             _propertyListingTypeDal = propertyListingTypeDal;
             _userDal = userDal;
         }
-        public async Task<bool> DeleteProperty(int id)
+        public async Task<bool> DeleteProperty(string _GUID)
         {
-            Property? property = await _propertyDal.GetByIdAsync(id);
-            return (property == null) ? false : (await _propertyDal.DeleteByIdAsync(id));
+            Guid guid = new Guid(_GUID);
+            Property? property = await _propertyDal.GetByIdAsync(guid);
+            return (property == null) ? false : (await _propertyDal.DeleteByIdAsync(guid));
         }
 
         public async Task<IEnumerable<Property>> FilterPropertiesAsync(PropertyFilterDTO propertyFilterDTO)
@@ -44,7 +45,8 @@ namespace RealEstateService.Concrete
             (propertyFilterDTO.Balcony == null || p.Balcony == propertyFilterDTO.Balcony) &&
             (propertyFilterDTO.HeatSystem.IsNullOrEmpty() || p.HeatSystem.ToLower().Equals(propertyFilterDTO.HeatSystem!.ToLower())) &&
             (p.PropertyPrice >= propertyFilterDTO.MinPrice) &&
-            (p.PropertyPrice<= propertyFilterDTO.MaxPrice)
+            (p.PropertyPrice <= propertyFilterDTO.MaxPrice) &&
+            (p.OnListing == true)
             );
             return filteredProperties;
         }
@@ -54,13 +56,10 @@ namespace RealEstateService.Concrete
             return await _propertyDal.GetAllAsync();
         }
 
-        public async Task<Property?> GetProperty(int id)
+        public async Task<Property?> GetProperty(string _GUID)
         {
-            if (id > 0)
-            {
-                return await _propertyDal.GetByIdAsync(id);
-            }
-            return null;
+            Guid guid = new Guid(_GUID);
+            return await _propertyDal.GetByIdAsync(guid);
         }
 
         public async Task<Property?> InsertProperty(PropertyDTO propertyDTO)
@@ -69,7 +68,7 @@ namespace RealEstateService.Concrete
             //So we must check whether these ID's exist in database or not. If not, return BadRequest.
             if ((await _propertyTypeDal.GetAllAsync()).Any(p => p.PropertyTypeID == propertyDTO.PropertyTypeID) &&
                 (await _propertyListingTypeDal.GetAllAsync()).Any(p => p.PropertyListingTypeID == propertyDTO.PropertyListingTypeID) &&
-                (await _userDal.GetByIdAsync(propertyDTO.UserID)!=null))
+                (await _userDal.GetByIdAsync(propertyDTO.UserID) != null))
             {
                 Property property = new()
                 {
@@ -99,9 +98,9 @@ namespace RealEstateService.Concrete
             return null;
         }
 
-        public async Task<Property?> UpdateProperty(PropertyDTO propertyDTO, int propertyId)
+        public async Task<Property?> UpdateProperty(PropertyDTO propertyDTO, string propertyGUID)
         {
-            Property? property = await _propertyDal.GetByIdAsync(propertyId);
+            Property? property = await _propertyDal.GetByIdAsync(new Guid(propertyGUID));
             if (property != null)
             {
                 property.PropertyName = propertyDTO.PropertyName;
@@ -120,7 +119,7 @@ namespace RealEstateService.Concrete
                 property.Dues = propertyDTO.Dues;
                 property.BuiltYear = propertyDTO.BuiltYear;
                 property.Floor = propertyDTO.Floor;
-                property.TotalFloor= propertyDTO.TotalFloor;
+                property.TotalFloor = propertyDTO.TotalFloor;
 
                 return _propertyDal.Update(property);
             }

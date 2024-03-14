@@ -34,8 +34,7 @@ namespace RealEstateEntities.Entities
 
         [Required]
         public int UserID { get; set; }
-        [Required]
-        public virtual User User { get; set; }
+ 
     }
 }
 

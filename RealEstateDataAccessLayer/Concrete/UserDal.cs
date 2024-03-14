@@ -21,7 +21,7 @@ namespace RealEstateDataAccessLayer.Concrete
 
         public override async Task<User?> GetByIdAsync(int id)
         {
-            return await base._entities.Include(u => u.ListedProperties).SingleOrDefaultAsync(u => u.UserID == id);
+            return await base._entities.Include(u => u.ListedProperties).Include(u=>u.OwnedProperties).SingleOrDefaultAsync(u => u.UserID == id);
         }
 
     }

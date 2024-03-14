@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RealEstateEntities.Entities
 {
@@ -16,7 +17,11 @@ namespace RealEstateEntities.Entities
         public byte[] Password { get; set; }
         [Required]
         public byte[] PasswordKey { get; set; }
-        [Required]
-        public virtual IEnumerable<Property> ListedProperties { get; set; }
+
+        [ForeignKey("UserID")]
+        public virtual ICollection<Property> ListedProperties { get; set; }
+
+        [ForeignKey("UserID")]
+        public virtual ICollection<OwnedProperty> OwnedProperties { get; set; }
     }
 }

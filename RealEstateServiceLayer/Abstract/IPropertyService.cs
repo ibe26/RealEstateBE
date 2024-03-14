@@ -7,9 +7,9 @@ namespace RealEstateService.Abstract
     {
         public Task<IEnumerable<Property>> GetProperties();
         public Task<IEnumerable<Property>> FilterPropertiesAsync(PropertyFilterDTO propertyFilterDTO);
-        public Task<Property?> GetProperty(int id);
+        public Task<Property?> GetProperty(string _GUID);
         public Task<Property?> InsertProperty(PropertyDTO propertyDTO);
-        public Task<Property?> UpdateProperty(PropertyDTO propertyDTO,int propertyId);
-        public Task<bool> DeleteProperty(int id);
+        public Task<Property?> UpdateProperty(PropertyDTO propertyDTO,string propertyGUID);
+        public Task<bool> DeleteProperty(string _GUID);
     }
 }

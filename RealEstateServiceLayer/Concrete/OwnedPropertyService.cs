@@ -35,7 +35,7 @@ namespace RealEstateServiceLayer.Concrete
             throw new ArgumentException("No Property owned with corresponding id.");
         }
 
-        public Task<OwnedProperty?> InsertOwnedProperty(OwnedPropertyDTO? OwnedPropertyDTO)
+        public async Task<OwnedProperty?> InsertOwnedProperty(OwnedPropertyDTO? OwnedPropertyDTO)
         {
             if (OwnedPropertyDTO == null) throw new ArgumentNullException(nameof(OwnedPropertyDTO));
             OwnedProperty property = new OwnedProperty
@@ -50,7 +50,7 @@ namespace RealEstateServiceLayer.Concrete
                 UserID = OwnedPropertyDTO.UserID
             };
            
-            return _ownedPropertyDal.AddAsync(property);
+            return await _ownedPropertyDal.AddAsync(property);
         }
 
         public async Task<OwnedProperty?> UpdateOwnedProperty(OwnedPropertyDTO OwnedPropertyDTO, int OwnedPropertyId)

@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstateDataAccessLayer.Data;
 
 #nullable disable
 
-namespace RealEstateBE.Migrations
+namespace RealEstateDataAccessLayer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240311144957_added-new-row-to-property")]
+    partial class addednewrowtoproperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,9 +75,11 @@ namespace RealEstateBE.Migrations
 
             modelBuilder.Entity("RealEstateEntities.Entities.Property", b =>
                 {
-                    b.Property<Guid>("PropertyID")
+                    b.Property<int>("PropertyID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyID"));
 
                     b.Property<bool>("Balcony")
                         .HasColumnType("bit");
@@ -230,13 +235,15 @@ namespace RealEstateBE.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RealEstateEntities.Entities.User", null)
-                        .WithMany("OwnedProperties")
+                    b.HasOne("RealEstateEntities.Entities.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PropertyType");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RealEstateEntities.Entities.Property", b =>
@@ -267,8 +274,6 @@ namespace RealEstateBE.Migrations
             modelBuilder.Entity("RealEstateEntities.Entities.User", b =>
                 {
                     b.Navigation("ListedProperties");
-
-                    b.Navigation("OwnedProperties");
                 });
 #pragma warning restore 612, 618
         }
