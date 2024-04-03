@@ -23,11 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Upload\" />
+    <ProjectReference Include="..\RealEstateServiceLayer\RealEstateServiceLayer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RealEstateServiceLayer\RealEstateServiceLayer.csproj" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

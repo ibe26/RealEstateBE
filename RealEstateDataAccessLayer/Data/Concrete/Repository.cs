@@ -6,7 +6,7 @@ namespace RealEstateDataAccessLayer.Data.Concrete
 {
     public class Repository<TEntity> :RepositoryReadWrite<TEntity>, IRepositoryReadWrite<TEntity> where TEntity : class
     {
-        public async Task<bool> DeleteByIdAsync(int id)
+        public virtual async Task<bool> DeleteByIdAsync(object id)
         {
                 TEntity? t = await _entities.FindAsync(id);
                 if (t != null)

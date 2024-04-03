@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RealEstateEntities.Entities
 {
@@ -24,8 +25,7 @@ namespace RealEstateEntities.Entities
         public int NetArea { get; set; }
 
         [Required]
-        public int GrossIncome { get; set; }
-        public int NetIncome { get; set; }
+        public int Yield { get; set; }
 
         [Required]
         public int PropertyTypeID { get; set; }
@@ -33,8 +33,18 @@ namespace RealEstateEntities.Entities
         public virtual PropertyType PropertyType { get; set; }
 
         [Required]
-        public int UserID { get; set; }
- 
+        public Guid UserID { get; set; }
+        [Required]
+       
+
+        [NotMapped]
+        public double PriceYieldRatio
+        {
+            get
+            {
+                return Yield!=0 ? (double)Math.Truncate((decimal)PropertyPrice/Yield*100)/100 : 0;
+            }
+        }
     }
 }
 

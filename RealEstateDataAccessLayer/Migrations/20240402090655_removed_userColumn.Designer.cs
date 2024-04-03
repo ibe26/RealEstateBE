@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstateDataAccessLayer.Data;
 
 #nullable disable
 
-namespace RealEstateBE.Migrations
+namespace RealEstateDataAccessLayer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240402090655_removed_userColumn")]
+    partial class removed_userColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -248,7 +251,7 @@ namespace RealEstateBE.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RealEstateEntities.Entities.User", "User")
+                    b.HasOne("RealEstateEntities.Entities.User", null)
                         .WithMany("ListedProperties")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -257,8 +260,6 @@ namespace RealEstateBE.Migrations
                     b.Navigation("PropertyListingType");
 
                     b.Navigation("PropertyType");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RealEstateEntities.Entities.User", b =>

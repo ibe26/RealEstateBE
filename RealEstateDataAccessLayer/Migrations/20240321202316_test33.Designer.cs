@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstateDataAccessLayer.Data;
 
 #nullable disable
 
-namespace RealEstateBE.Migrations
+namespace RealEstateDataAccessLayer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240321202316_test33")]
+    partial class test33
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +42,13 @@ namespace RealEstateBE.Migrations
                     b.Property<int>("GrossArea")
                         .HasColumnType("int");
 
+                    b.Property<int>("GrossIncome")
+                        .HasColumnType("int");
+
                     b.Property<int>("NetArea")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NetIncome")
                         .HasColumnType("int");
 
                     b.Property<string>("PropertyName")
@@ -52,17 +61,17 @@ namespace RealEstateBE.Migrations
                     b.Property<int>("PropertyTypeID")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UserID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Yield")
+                    b.Property<int>("UserID")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("UserID1")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("PropertyID");
 
                     b.HasIndex("PropertyTypeID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserID1");
 
                     b.ToTable("OwnedProperties");
                 });
@@ -225,13 +234,15 @@ namespace RealEstateBE.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RealEstateEntities.Entities.User", null)
+                    b.HasOne("RealEstateEntities.Entities.User", "User")
                         .WithMany("OwnedProperties")
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserID1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PropertyType");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RealEstateEntities.Entities.Property", b =>
@@ -248,7 +259,7 @@ namespace RealEstateBE.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RealEstateEntities.Entities.User", "User")
+                    b.HasOne("RealEstateEntities.Entities.User", null)
                         .WithMany("ListedProperties")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -257,8 +268,6 @@ namespace RealEstateBE.Migrations
                     b.Navigation("PropertyListingType");
 
                     b.Navigation("PropertyType");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RealEstateEntities.Entities.User", b =>

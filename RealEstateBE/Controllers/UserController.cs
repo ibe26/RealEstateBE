@@ -41,7 +41,7 @@ namespace RealEstateBE.Controllers
             }));
         }
         [HttpGet(Routes.getById)]
-        public async Task<IActionResult> GetUser(int id)
+        public async Task<IActionResult> GetUser(string id)
         {
             var user = await _userService.GetUser(id);
             if (user != null)
@@ -101,6 +101,7 @@ namespace RealEstateBE.Controllers
                 FirstName = FoundUser.FirstName,
                 LastName = FoundUser.LastName,
                 Properties=FoundUser.ListedProperties,
+                OwnedProperties=FoundUser.OwnedProperties,
                 Token = Token
             });
 
@@ -181,11 +182,12 @@ namespace RealEstateBE.Controllers
         {
             var handler = new JwtSecurityTokenHandler();
             try
+                
             {
                 var securityToken = handler.ReadJwtToken(token);
                 if (ValidateToken(token) && securityToken != null)
                 {
-                    return Ok(securityToken.Claims.SingleOrDefault(c => c.Type.Equals("ID")).Value);
+                    return Ok(securityToken.Claims.SingleOrDefault(c => c.Type.Equals("ID")));
                 }
             }
             catch (Exception)

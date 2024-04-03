@@ -44,10 +44,9 @@ namespace RealEstateServiceLayer.Concrete
                 PropertyName = OwnedPropertyDTO.PropertyName,
                 PropertyTypeID = OwnedPropertyDTO.PropertyTypeID,
                 GrossArea = OwnedPropertyDTO.GrossArea,
-                GrossIncome = OwnedPropertyDTO.GrossIncome,
                 NetArea = OwnedPropertyDTO.NetArea,
-                NetIncome = OwnedPropertyDTO.NetIncome,
-                UserID = OwnedPropertyDTO.UserID
+                Yield=OwnedPropertyDTO.Yield,
+                UserID = new Guid(OwnedPropertyDTO.UserID)
             };
            
             return await _ownedPropertyDal.AddAsync(property);
@@ -57,12 +56,13 @@ namespace RealEstateServiceLayer.Concrete
         {
             OwnedProperty property = await _ownedPropertyDal.GetByIdAsync(OwnedPropertyId) ?? throw new ArgumentNullException(nameof(OwnedPropertyDTO));
             property.PropertyName = OwnedPropertyDTO.PropertyName;
-                property.UserID = OwnedPropertyDTO.UserID;
+                property.UserID = new Guid(OwnedPropertyDTO.UserID);
                 property.PropertyTypeID = OwnedPropertyDTO.PropertyTypeID;
                 property.GrossArea = OwnedPropertyDTO.GrossArea;
                 property.NetArea = OwnedPropertyDTO.NetArea;
                 property.PropertyTypeID= OwnedPropertyDTO.PropertyTypeID;
                 property.PropertyPrice = OwnedPropertyDTO.PropertyPrice;
+                property.Yield = OwnedPropertyDTO.Yield;
                 return _ownedPropertyDal.Update(property);
         }
     }

@@ -5,8 +5,12 @@ namespace RealEstateEntities.Entities
 {
     public class User
     {
+        public User()
+        {
+            UserID = Guid.NewGuid();
+        }
         [Required]
-        public int UserID { get; set; }
+        public virtual Guid UserID { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
@@ -18,10 +22,8 @@ namespace RealEstateEntities.Entities
         [Required]
         public byte[] PasswordKey { get; set; }
 
-        [ForeignKey("UserID")]
         public virtual ICollection<Property> ListedProperties { get; set; }
 
-        [ForeignKey("UserID")]
         public virtual ICollection<OwnedProperty> OwnedProperties { get; set; }
     }
 }

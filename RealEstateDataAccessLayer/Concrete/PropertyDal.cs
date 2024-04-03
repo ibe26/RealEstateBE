@@ -7,7 +7,7 @@ namespace RealEstateDataAccessLayer.Concrete
 {
     public class PropertyDal:Repository<Property>,IPropertyDal
     {
-        public async Task<bool> DeleteByIdAsync(Guid guid)
+        public override async Task<bool> DeleteByIdAsync(object guid)
         {
             Property? property = await GetByIdAsync(guid);
             if (property != null)
@@ -19,12 +19,12 @@ namespace RealEstateDataAccessLayer.Concrete
 
         public override async Task<IEnumerable<Property>> GetAllAsync()
         {
-            return await _entities.Include(p=>p.PropertyListingType).Include(p=>p.PropertyListingType).OrderByDescending(p => p.DateListed).ToListAsync();
+            return await _entities.Include(p => p.PropertyListingType).Include(p => p.PropertyListingType).OrderByDescending(p => p.DateListed).ToListAsync();
         }
-        
-        public async Task<Property?> GetByIdAsync(Guid guid)
+
+        public override async Task<Property?> GetByIdAsync(object guid)
         {
-            return await _entities.FindAsync(guid);
+            return await _entities.Include(p => p.PropertyListingType).Include(p => p.PropertyListingType).OrderByDescending(p => p.DateListed).SingleOrDefaultAsync(p => p.PropertyID == new Guid(guid.ToString()!));
         } 
     }
 }

@@ -3,6 +3,7 @@ using RealEstateDataAccessLayer.Abstract;
 using RealEstateEntities.Entities;
 using RealEstateEntities.Entities.DTOs.User;
 using RealEstateService.Abstract;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq.Expressions;
 using System.Security.Claims;
@@ -22,9 +23,10 @@ namespace RealEstateService.Concrete
         {
             return await _userDal.GetAllAsync();
         }
-        public async Task<User?> GetUser(int id)
+        public async Task<User?> GetUser(string id)
         {
-            return id > 0 ? await _userDal.GetByIdAsync(id) : null;
+            Guid guid=new Guid(id);
+            return await _userDal.GetByIdAsync(guid);
         }
 
         public async Task<User?> Register(RegisterDTO registerDTO)
@@ -82,6 +84,7 @@ namespace RealEstateService.Concrete
                 FirstName = FoundUser.FirstName,
                 LastName = FoundUser.LastName,
                 Properties=FoundUser.ListedProperties,
+                OwnedProperties=FoundUser.OwnedProperties,
                 Token = Token
             };
         }

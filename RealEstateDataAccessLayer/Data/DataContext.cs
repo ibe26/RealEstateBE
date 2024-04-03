@@ -14,6 +14,14 @@ namespace RealEstateDataAccessLayer.Data
             optionsBuilder.UseLazyLoadingProxies();
 
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Property>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.ListedProperties)
+                .HasForeignKey(p => p.UserID)
+                .OnDelete(DeleteBehavior.Cascade); // Configure cascade delete
+        }
         public DataContext()
         {
             

@@ -14,15 +14,14 @@ namespace RealEstateDataAccessLayer.Concrete
             return await base._entities.AnyAsync(predicate);
         }
 
-        public override async Task<IEnumerable<User>> GetAllAsync()
-        {
-            return await base._entities.ToListAsync();
-        }
+        
 
-        public override async Task<User?> GetByIdAsync(int id)
+        public override async Task<User?> GetByIdAsync(object id)
         {
-            return await base._entities.Include(u => u.ListedProperties).Include(u=>u.OwnedProperties).SingleOrDefaultAsync(u => u.UserID == id);
+            SaveChanges();
+            return await base._entities.Include(u=>u.OwnedProperties).Include(u=>u.ListedProperties).SingleOrDefaultAsync(u=>u.UserID==new Guid(id.ToString()!));
         }
+       
 
     }
 }

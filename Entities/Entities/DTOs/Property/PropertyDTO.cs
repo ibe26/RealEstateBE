@@ -7,7 +7,7 @@ namespace RealEstateEntities.Entities.DTOs.Property
         
         public string PropertyName { get; set; } = string.Empty;
         
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
         
         public int PropertyTypeID { get; set; }
         

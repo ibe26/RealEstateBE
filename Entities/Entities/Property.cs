@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace RealEstateEntities.Entities
 {
@@ -11,7 +12,9 @@ namespace RealEstateEntities.Entities
         [Required, Key]
         public Guid PropertyID { get; set; }
         [Required]
-        public int UserID { get; set; }
+        public virtual Guid UserID { get; set; }
+        [Required,JsonIgnore]
+        public virtual User User { get; set; }
         [Required]
         public string PropertyName { get; set; } = string.Empty;
         [Required]

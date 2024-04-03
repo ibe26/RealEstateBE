@@ -16,31 +16,31 @@ namespace RealEstateControllerLayer.Controllers
             _ownedPropertyService = ownedPropertyService;
         }
 
-        [HttpGet(Routes.getList)]
+        [HttpGet()]
         public async Task<IActionResult> getList()
         {
             return Ok(await _ownedPropertyService.GetOwnedProperties());
         }
 
-        [HttpGet(Routes.getById)]
+        [HttpGet("{id}")]
         public async Task<IActionResult> getById(int id)
         {
             return Ok(await _ownedPropertyService.GetOwnedProperty(id));
         }
 
-        [HttpPost(Routes.insert)]
+        [HttpPost()]
         public async Task<IActionResult> insertOwnedProperty([FromBody] OwnedPropertyDTO ownedPropertyDTO)
         {
             return Ok(await _ownedPropertyService.InsertOwnedProperty(ownedPropertyDTO));
         }
 
-        [HttpDelete(Routes.deleteById)]
+        [HttpDelete("id")]
         public async Task<IActionResult> deleteProperty(int id)
         {
             return Ok(await _ownedPropertyService.DeleteOwnedProperty(id));
         }
 
-        [HttpPut(Routes.update)]
+        [HttpPut("id")]
         public async Task<IActionResult> updateProperty([FromBody] OwnedPropertyDTO ownedPropertyDTO, int id)
         {
             return Ok(await _ownedPropertyService.UpdateOwnedProperty(ownedPropertyDTO, id));

@@ -7,6 +7,7 @@ using RealEstateEntities.Entities;
 using Microsoft.AspNetCore.Authorization;
 using RealEstateBE.Security;
 using System;
+using RealEstateControllerLayer.Controllers.Helper;
 
 namespace RealEstateBE.Controllers
 {
@@ -18,18 +19,21 @@ namespace RealEstateBE.Controllers
         private readonly ISecurity _security;
         private readonly IMemoryCache _memoryCache;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IImageOperations _imageOperations;
 
         private const string PropertyCacheKey = "PropertyCacheKey";
 
         public PropertyController(IPropertyService propertyService,
                                   ISecurity security,
                                   IMemoryCache memoryCache,
-                                  IWebHostEnvironment webHostEnvironment)
+                                  IWebHostEnvironment webHostEnvironment,
+                                  IImageOperations imageOperations)
         {
             _propertyService = propertyService;
-            _security= security;
+            _security = security;
             _memoryCache = memoryCache;
             _webHostEnvironment = webHostEnvironment;
+            _imageOperations = imageOperations;
         }
 
         [HttpGet()]
@@ -82,7 +86,7 @@ namespace RealEstateBE.Controllers
         }
 
         [Authorize]
-        [HttpPost("{propertyGUID}")]
+        [HttpPut("{propertyGUID}")]
         public async Task<IActionResult> UpdateProperty([FromBody] PropertyDTO propertyDTO, string propertyGUID)
         {
             var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
@@ -115,9 +119,9 @@ namespace RealEstateBE.Controllers
             var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             var property = await _propertyService.GetProperty(propertyGUID);
 
-            if (token != null && property!=null)
+            if (token != null && property != null)
             {
-                if (!_security.IsAuthenticatedByToken(token,property.UserID))
+                if (!_security.IsAuthenticatedByToken(token, property.UserID))
                 {
                     return Unauthorized();
                 }
@@ -127,18 +131,18 @@ namespace RealEstateBE.Controllers
                 if (await _propertyService.DeleteProperty(propertyGUID))
                 {
                     _memoryCache.Remove(PropertyCacheKey);
-                    return Ok(propertyGUID);
+                    return Ok(new JsonResult(propertyGUID));
                 }
             }
             return BadRequest("Parameter is invalid.");
         }
 
-        [HttpPost("image/upload/{propertyGUID}")]
+        [HttpPost("Image/{propertyGUID}")]
         [Authorize]
-        public IActionResult UploadImages(string propertyGUID)
+        public async Task<IActionResult> UploadImages(string propertyGUID)
         {
             var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            var property = _propertyService.GetProperty(propertyGUID).Result;
+            var property = await _propertyService.GetProperty(propertyGUID);
 
             if (token != null && property != null)
             {
@@ -148,77 +152,27 @@ namespace RealEstateBE.Controllers
                 }
             }
             var formFiles = Request.Form.Files;
-            int succesfulUpload = 0;
-            try
-            {
-                if (!Directory.Exists(GetFilePath(propertyGUID)))
-                {
-                    Directory.CreateDirectory(GetFilePath(propertyGUID));
-                }
-                foreach (var file in formFiles)
-                {
-                    string imagepath = GetFilePath(propertyGUID) + $@"\\{file.FileName}";
-                    if (System.IO.File.Exists(imagepath))
-                    {
-                        System.IO.File.Delete(imagepath);
-                    }
-                    using (FileStream stream = System.IO.File.Create(imagepath))
-                    {
-                        file.CopyTo(stream);
-                        succesfulUpload++;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return (succesfulUpload - formFiles.Count != 0) ? BadRequest("Some files couldn't be uploaded.") : Ok($"{succesfulUpload} " + "Files Uploaded successfully");
+            int succesfulUpload;
+            _imageOperations.UploadImages(propertyGUID, formFiles, out succesfulUpload);
+            
+            return (succesfulUpload - formFiles.Count != 0) ? BadRequest("Some files couldn't be uploaded.") : Ok(JsonContent.Create($"{succesfulUpload} " + "Files Uploaded successfully"));
         }
 
-        [HttpGet(Routes.getById)]
+        [HttpGet("Image/{propertyGUID}")]
         public IActionResult GetImages(string propertyGUID)
         {
-            List<Photo> photoList = new();
+            IList<Photo> photoList=new List<Photo>();
             string hostUrl = $@"{Request.Scheme}://{Request.Host}{Request.PathBase}";
-            try
-            {
-                string filePath = GetFilePath(propertyGUID);
-                if (Directory.Exists(filePath))
-                {
-                    DirectoryInfo directoryInfo = new DirectoryInfo(filePath);
-                    FileInfo[] fileInfos = directoryInfo.GetFiles();
-                    foreach (FileInfo fileInfo in fileInfos)
-                    {
-                        string fileName = fileInfo.Name;
-                        string imagePath = filePath + "\\" + fileName;
-                        if (System.IO.File.Exists(imagePath))
-                        {
-                            string imageUrl = hostUrl + $@"{GetFilePath(propertyGUID)}+/{fileName}";
-                            var photo = new Photo()
-                            {
-                                name = fileName,
-                                url = imageUrl,
-                            };
-                            photoList.Add(photo);
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            _imageOperations.GetPhotos(propertyGUID, hostUrl,out photoList);
             return Ok(photoList);
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("Image")]
         [Authorize]
-        public IActionResult DeleteImage(string propertyGUID, string imageName)
+        public async Task<IActionResult> DeleteImage(string propertyGUID, string imageName)
         {
             var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            var property = _propertyService.GetProperty(propertyGUID).Result;
+            var property = await _propertyService.GetProperty(propertyGUID);
 
             if (token != null && property != null)
             {
@@ -230,15 +184,16 @@ namespace RealEstateBE.Controllers
 
             try
             {
-                string imagepath = GetFilePath(propertyGUID) + $@"\\{imageName}";
+                string filePath = this._webHostEnvironment.WebRootPath + $@"\\Upload\\Property{propertyGUID}";
+                string imagepath = filePath + $@"\\{imageName}";
                 if (System.IO.File.Exists(imagepath))
                 {
                     System.IO.File.Delete(imagepath);
-                    if (!Directory.EnumerateFileSystemEntries(GetFilePath(propertyGUID)).Any())
+                    if (!Directory.EnumerateFileSystemEntries(filePath).Any())
                     {
-                        Directory.Delete(GetFilePath(propertyGUID));
+                        Directory.Delete(filePath);
                     }
-                    return Ok(propertyGUID);
+                    return Ok();
                 }
             }
             catch (Exception)
@@ -247,11 +202,9 @@ namespace RealEstateBE.Controllers
             }
             return BadRequest("Such image does not exist.");
         }
+
         [NonAction]
-        private string GetFilePath(string propertyGUID)
-        {
-            return this._webHostEnvironment.WebRootPath + $@"\\Upload\\Property\\{propertyGUID}";
-        }
+        
     }
 }
 

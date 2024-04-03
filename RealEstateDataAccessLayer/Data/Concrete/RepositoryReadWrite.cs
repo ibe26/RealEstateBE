@@ -14,13 +14,9 @@ namespace RealEstateDataAccessLayer.Data.Concrete
         {
             return await _entities.ToListAsync();
         }
-        public virtual async Task<TEntity?> GetByIdAsync(int id)
+        public virtual async Task<TEntity?> GetByIdAsync(object id)
         {
-            if (id > 0)
-            {
                 return await _entities.FindAsync(id);
-            }
-            return null;
         }
         public async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
