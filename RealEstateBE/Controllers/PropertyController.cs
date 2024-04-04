@@ -154,16 +154,16 @@ namespace RealEstateBE.Controllers
             var formFiles = Request.Form.Files;
             int succesfulUpload;
             _imageOperations.UploadImages(propertyGUID, formFiles, out succesfulUpload);
-            
+
             return (succesfulUpload - formFiles.Count != 0) ? BadRequest("Some files couldn't be uploaded.") : Ok(JsonContent.Create($"{succesfulUpload} " + "Files Uploaded successfully"));
         }
 
         [HttpGet("Image/{propertyGUID}")]
         public IActionResult GetImages(string propertyGUID)
         {
-            IList<Photo> photoList=new List<Photo>();
+            IList<Photo> photoList = new List<Photo>();
             string hostUrl = $@"{Request.Scheme}://{Request.Host}{Request.PathBase}";
-            _imageOperations.GetPhotos(propertyGUID, hostUrl,out photoList);
+            _imageOperations.GetPhotos(propertyGUID, hostUrl, photoList);
             return Ok(photoList);
         }
 
@@ -202,9 +202,6 @@ namespace RealEstateBE.Controllers
             }
             return BadRequest("Such image does not exist.");
         }
-
-        [NonAction]
-        
     }
 }
 

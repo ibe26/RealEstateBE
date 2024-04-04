@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 //using RealEstateDataAccessLayer.Dal.Concrete;
 //using RealEstateBE.Data;
 using RealEstateBE.Security;
+using RealEstateControllerLayer.Controllers.Helper;
 using RealEstateDataAccessLayer.Abstract;
 using RealEstateDataAccessLayer.Concrete;
 using RealEstateService.Abstract;
@@ -39,6 +40,7 @@ builder.Services.AddScoped<IOwnedPropertyDal, OwnedPropertyDal>();
 
 builder.Services.AddScoped<IMemoryCache, MemoryCache>();
 builder.Services.AddScoped<ISecurity, Security>();
+builder.Services.AddScoped<IImageOperations, ImageOperations>();
 
 builder.Services.AddAuthentication(x =>
 {
