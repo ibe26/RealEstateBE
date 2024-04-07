@@ -21,6 +21,8 @@ namespace RealEstateBE.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IImageOperations _imageOperations;
 
+        private readonly string category = "Property";
+
         private const string PropertyCacheKey = "PropertyCacheKey";
 
         public PropertyController(IPropertyService propertyService,
@@ -153,7 +155,7 @@ namespace RealEstateBE.Controllers
             }
             var formFiles = Request.Form.Files;
             int succesfulUpload;
-            _imageOperations.UploadImages(propertyGUID, formFiles, out succesfulUpload);
+            _imageOperations.UploadImages(propertyGUID,category, formFiles, out succesfulUpload);
 
             return (succesfulUpload - formFiles.Count != 0) ? BadRequest("Some files couldn't be uploaded.") : Ok(JsonContent.Create($"{succesfulUpload} " + "Files Uploaded successfully"));
         }
@@ -163,7 +165,7 @@ namespace RealEstateBE.Controllers
         {
             IList<Photo> photoList = new List<Photo>();
             string hostUrl = $@"{Request.Scheme}://{Request.Host}{Request.PathBase}";
-            _imageOperations.GetPhotos(propertyGUID, hostUrl, photoList);
+            _imageOperations.GetPhotos(propertyGUID,category, hostUrl, photoList);
             return Ok(photoList);
         }
 
@@ -182,25 +184,9 @@ namespace RealEstateBE.Controllers
                 }
             }
 
-            try
-            {
-                string filePath = this._webHostEnvironment.WebRootPath + $@"\\Upload\\Property{propertyGUID}";
-                string imagepath = filePath + $@"\\{imageName}";
-                if (System.IO.File.Exists(imagepath))
-                {
-                    System.IO.File.Delete(imagepath);
-                    if (!Directory.EnumerateFileSystemEntries(filePath).Any())
-                    {
-                        Directory.Delete(filePath);
-                    }
-                    return Ok();
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return BadRequest("Such image does not exist.");
+            _imageOperations.DeleteImages(propertyGUID.ToString(),category, imageName);
+            
+            return Ok();
         }
     }
 }

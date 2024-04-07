@@ -15,7 +15,9 @@ namespace RealEstateControllerLayer.Controllers
     {
         private readonly IOwnedPropertyService _ownedPropertyService;
         private readonly IImageOperations _imageOperations;
+        private readonly ISecurity _security;
 
+        private readonly string category = "OwnedProperty";
         public OwnedPropertyController(IOwnedPropertyService ownedPropertyService,
                                        IImageOperations imageOperations,
                                        ISecurity security)
@@ -71,26 +73,26 @@ namespace RealEstateControllerLayer.Controllers
             }
             var formFiles = Request.Form.Files;
             int succesfulUpload;
-            _imageOperations.UploadImages(propertyGUID, formFiles, out succesfulUpload);
+            _imageOperations.UploadImages(id.ToString(),category, formFiles, out succesfulUpload);
 
             return (succesfulUpload - formFiles.Count != 0) ? BadRequest("Some files couldn't be uploaded.") : Ok(JsonContent.Create($"{succesfulUpload} " + "Files Uploaded successfully"));
         }
 
         [HttpGet("Image/{propertyGUID}")]
-        public IActionResult GetImages(string propertyGUID)
+        public IActionResult GetImages(int propertyID)
         {
             IList<Photo> photoList = new List<Photo>();
             string hostUrl = $@"{Request.Scheme}://{Request.Host}{Request.PathBase}";
-            _imageOperations.GetPhotos(propertyGUID, hostUrl, photoList);
+            _imageOperations.GetPhotos(propertyID.ToString(),category, hostUrl, photoList);
             return Ok(photoList);
         }
 
         [HttpDelete("Image")]
         [Authorize]
-        public async Task<IActionResult> DeleteImage(string propertyGUID, string imageName)
+        public async Task<IActionResult> DeleteImage(int propertyID, string imageName)
         {
             var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            var property = await _propertyService.GetProperty(propertyGUID);
+            var property = await _ownedPropertyService.GetOwnedProperty(propertyID);
 
             if (token != null && property != null)
             {
@@ -100,25 +102,8 @@ namespace RealEstateControllerLayer.Controllers
                 }
             }
 
-            try
-            {
-                string filePath = this._webHostEnvironment.WebRootPath + $@"\\Upload\\Property{propertyGUID}";
-                string imagepath = filePath + $@"\\{imageName}";
-                if (System.IO.File.Exists(imagepath))
-                {
-                    System.IO.File.Delete(imagepath);
-                    if (!Directory.EnumerateFileSystemEntries(filePath).Any())
-                    {
-                        Directory.Delete(filePath);
-                    }
-                    return Ok();
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return BadRequest("Such image does not exist.");
+            _imageOperations.DeleteImages(propertyID.ToString(),category, imageName);
+            return Ok();
         }
     }
 }

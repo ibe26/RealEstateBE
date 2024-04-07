@@ -27,7 +27,7 @@ namespace RealEstateControllerLayer.Controllers.Helper
                         string imagePath = filePath + "\\" + fileName;
                         if (System.IO.File.Exists(imagePath))
                         {
-                            string imageUrl = hostUrl + $@"/Upload/{category}/{id}/{fileName}";
+                            string imageUrl = hostUrl + $@"/Upload/{category}{id}/{fileName}";
                             var photo = new Photo()
                             {
                                 name = fileName,
@@ -73,9 +73,30 @@ namespace RealEstateControllerLayer.Controllers.Helper
                 throw;
             }
         }
+
+        public void DeleteImages(string id,string category,string imageName)
+        {
+            try
+            {
+                string filePath = GetFilePath(id,category);
+                string imagepath = filePath + $@"\\{imageName}";
+                if (File.Exists(imagepath))
+                {
+                    System.IO.File.Delete(imagepath);
+                    if (!Directory.EnumerateFileSystemEntries(filePath).Any())
+                    {
+                        Directory.Delete(filePath);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         private string GetFilePath(string id,string category)
         {
-            return this._webHostEnvironment.WebRootPath + $@"\\Upload\\{category}{id}";
+            return _webHostEnvironment.WebRootPath + $@"\\Upload\\{category}{id}";
         }
     }
 }
