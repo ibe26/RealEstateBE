@@ -27,10 +27,10 @@ namespace RealEstateControllerLayer.Controllers
             _security = security;
         }
 
-        [HttpGet()]
-        public async Task<IActionResult> getList()
+        [HttpGet("user/{userGUID}")]
+        public async Task<IActionResult> getList(string userGUID)
         {
-            return Ok(await _ownedPropertyService.GetOwnedProperties());
+            return Ok(await _ownedPropertyService.GetOwnedProperties(userGUID));
         }
 
         [HttpGet("{id}")]
@@ -45,19 +45,19 @@ namespace RealEstateControllerLayer.Controllers
             return Ok(await _ownedPropertyService.InsertOwnedProperty(ownedPropertyDTO));
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> deleteProperty(int id)
         {
             return Ok(await _ownedPropertyService.DeleteOwnedProperty(id));
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> updateProperty([FromBody] OwnedPropertyDTO ownedPropertyDTO, int id)
         {
             return Ok(await _ownedPropertyService.UpdateOwnedProperty(ownedPropertyDTO, id));
         }
 
-        [HttpPost("Image/{propertyGUID}")]
+        [HttpPost("Image/{id}")]
         [Authorize]
         public async Task<IActionResult> UploadImages(int id)
         {
@@ -71,14 +71,13 @@ namespace RealEstateControllerLayer.Controllers
                     return Unauthorized();
                 }
             }
-            var formFiles = Request.Form.Files;
-            int succesfulUpload;
-            _imageOperations.UploadImages(id.ToString(),category, formFiles, out succesfulUpload);
+            var formFile = Request.Form.Files[0];
+            _imageOperations.UploadImageSingle(id.ToString(),category, formFile);
 
-            return (succesfulUpload - formFiles.Count != 0) ? BadRequest("Some files couldn't be uploaded.") : Ok(JsonContent.Create($"{succesfulUpload} " + "Files Uploaded successfully"));
+            return Ok();
         }
 
-        [HttpGet("Image/{propertyGUID}")]
+        [HttpGet("Image/{propertyID}")]
         public IActionResult GetImages(int propertyID)
         {
             IList<Photo> photoList = new List<Photo>();

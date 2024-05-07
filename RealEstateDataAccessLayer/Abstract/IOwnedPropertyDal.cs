@@ -5,5 +5,6 @@ namespace RealEstateDataAccessLayer.Abstract
 {
     public interface IOwnedPropertyDal:IRepository<OwnedProperty>
     {
+        public Task<IEnumerable<OwnedProperty>> GetAllAsync(string userGUID);
     }
 }

@@ -15,6 +15,5 @@ namespace RealEstateEntities.Entities.DTOs.Property
         public string? Quarter { get; set; } = string.Empty;
         public bool? Balcony { get; set; }
         public string? HeatSystem { get; set; }
-
     }
 }

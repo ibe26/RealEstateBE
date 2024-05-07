@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using RealEstateEntities.Entities;
+using System.IO;
 
 namespace RealEstateControllerLayer.Controllers.Helper
 {
@@ -16,7 +17,7 @@ namespace RealEstateControllerLayer.Controllers.Helper
         {
             try
             {
-                string filePath = GetFilePath(id,category);
+                string filePath = GetFilePath(id, category);
                 if (Directory.Exists(filePath))
                 {
                     DirectoryInfo directoryInfo = new DirectoryInfo(filePath);
@@ -45,12 +46,12 @@ namespace RealEstateControllerLayer.Controllers.Helper
             return photoList;
         }
 
-        public void UploadImages(string id, string category,IFormFileCollection formFiles, out int succesfulUpload)
+        public void UploadImages(string id, string category, IFormFileCollection formFiles, out int succesfulUpload)
         {
             try
             {
                 succesfulUpload = 0;
-                if (!Directory.Exists(GetFilePath(id,category)))
+                if (!Directory.Exists(GetFilePath(id, category)))
                 {
                     Directory.CreateDirectory(GetFilePath(id, category));
                 }
@@ -73,12 +74,34 @@ namespace RealEstateControllerLayer.Controllers.Helper
                 throw;
             }
         }
+        public void UploadImageSingle(string id, string category, IFormFile formFile)
+        {
+            string imagepath = GetFilePath(id, category);
 
-        public void DeleteImages(string id,string category,string imageName)
+            try
+            {
+                if (Directory.Exists(imagepath))
+                {
+                    Directory.Delete(imagepath, true);
+                }
+                Directory.CreateDirectory(imagepath);
+
+                using (FileStream stream = File.Create(imagepath + $@"\\{formFile.FileName}"))
+                {
+                    formFile.CopyTo(stream);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void DeleteImages(string id, string category, string imageName)
         {
             try
             {
-                string filePath = GetFilePath(id,category);
+                string filePath = GetFilePath(id, category);
                 string imagepath = filePath + $@"\\{imageName}";
                 if (File.Exists(imagepath))
                 {
@@ -94,7 +117,7 @@ namespace RealEstateControllerLayer.Controllers.Helper
                 throw;
             }
         }
-        private string GetFilePath(string id,string category)
+        private string GetFilePath(string id, string category)
         {
             return _webHostEnvironment.WebRootPath + $@"\\Upload\\{category}{id}";
         }

@@ -5,7 +5,7 @@ namespace RealEstateServiceLayer.Abstract
 {
     public interface IOwnedPropertyService
     {
-        public Task<IEnumerable<OwnedProperty>> GetOwnedProperties();
+        public Task<IEnumerable<OwnedProperty>> GetOwnedProperties(string userGUID);
         public Task<OwnedProperty?> GetOwnedProperty(int id);
         public Task<OwnedProperty?> InsertOwnedProperty(OwnedPropertyDTO OwnedPropertyDTO);
         public Task<OwnedProperty?> UpdateOwnedProperty(OwnedPropertyDTO OwnedPropertyDTO, int OwnedPropertyId);

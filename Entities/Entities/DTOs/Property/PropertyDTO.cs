@@ -34,7 +34,8 @@ namespace RealEstateEntities.Entities.DTOs.Property
         public int Dues { get; set; }
         
         public short BuiltYear { get; set; }
-        
+        public bool OnListing { get; set; }
+
         public string HeatSystem { get; set; } = string.Empty;
         public short? Floor { get; set; }
         public short? TotalFloor { get; set; }

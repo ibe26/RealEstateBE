@@ -91,7 +91,7 @@ namespace RealEstateService.Concrete
                     HeatSystem = propertyDTO.HeatSystem,
                     BuiltYear = propertyDTO.BuiltYear,
                     TotalFloor = propertyDTO.TotalFloor,
-                    Floor = propertyDTO.Floor
+                    Floor = propertyDTO.Floor,
                 };
                 return await _propertyDal.AddAsync(property);
             }
@@ -120,6 +120,9 @@ namespace RealEstateService.Concrete
                 property.BuiltYear = propertyDTO.BuiltYear;
                 property.Floor = propertyDTO.Floor;
                 property.TotalFloor = propertyDTO.TotalFloor;
+                property.OnListing = propertyDTO.OnListing;
+                property.BathroomCount = propertyDTO.BathroomCount;
+                property.BedroomCount = propertyDTO.BedroomCount;
 
                 return _propertyDal.Update(property);
             }

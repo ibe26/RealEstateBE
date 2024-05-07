@@ -25,6 +25,11 @@ namespace RealEstateServiceLayer.Concrete
             return await _ownedPropertyDal.GetAllAsync();
         }
 
+        public async Task<IEnumerable<OwnedProperty>> GetOwnedProperties(string userGUID)
+        {
+            return await _ownedPropertyDal.GetAllAsync(userGUID);
+        }
+
         public async Task<OwnedProperty?> GetOwnedProperty(int id)
         {
             OwnedProperty? ownedProperty = await _ownedPropertyDal.GetByIdAsync(id);
@@ -46,6 +51,7 @@ namespace RealEstateServiceLayer.Concrete
                 GrossArea = OwnedPropertyDTO.GrossArea,
                 NetArea = OwnedPropertyDTO.NetArea,
                 Yield=OwnedPropertyDTO.Yield,
+                PropertyPrice=OwnedPropertyDTO.PropertyPrice,
                 UserID = new Guid(OwnedPropertyDTO.UserID)
             };
            

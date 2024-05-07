@@ -35,14 +35,14 @@ namespace RealEstateEntities.Entities
         [Required]
         public Guid UserID { get; set; }
         [Required]
-       
+
 
         [NotMapped]
         public double PriceYieldRatio
         {
             get
             {
-                return Yield!=0 ? (double)Math.Truncate((decimal)PropertyPrice/Yield*100)/100 : 0;
+                return Yield != 0 ? (double)Math.Truncate((decimal)PropertyPrice/Yield * 100) / 100 : 0;
             }
         }
     }

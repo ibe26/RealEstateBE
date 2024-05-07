@@ -18,7 +18,6 @@ namespace RealEstateBE.Controllers
         private readonly IPropertyService _propertyService;
         private readonly ISecurity _security;
         private readonly IMemoryCache _memoryCache;
-        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IImageOperations _imageOperations;
 
         private readonly string category = "Property";
@@ -28,13 +27,11 @@ namespace RealEstateBE.Controllers
         public PropertyController(IPropertyService propertyService,
                                   ISecurity security,
                                   IMemoryCache memoryCache,
-                                  IWebHostEnvironment webHostEnvironment,
                                   IImageOperations imageOperations)
         {
             _propertyService = propertyService;
             _security = security;
             _memoryCache = memoryCache;
-            _webHostEnvironment = webHostEnvironment;
             _imageOperations = imageOperations;
         }
 
